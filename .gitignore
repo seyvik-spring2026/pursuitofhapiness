@@ -1,0 +1,4 @@
+public/site-media/
+node_modules/
+.next/
+.DS_Store
