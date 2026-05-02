@@ -35,7 +35,17 @@ const LOCATIONS: LocationData[] = [
   {
     name: 'Battery Park City, NYC',
     illustration: `${R2}/site-media/Entergalactic/battery_park-betterphoto.png`,
-    photos: [],
+    photos: [
+      `${R2}/site-media/batterypark-city/DSC_0913.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_0920.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_0925.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_0939.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_0959.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_0979.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_0983.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_1008.JPG`,
+      `${R2}/site-media/batterypark-city/DSC_1018.JPG`,
+    ],
   },
   {
     name: 'Chelsea, NYC',
@@ -263,7 +273,7 @@ function LocationCard({ location }: { location: LocationData }) {
                 {location.photos.length > previewPhotos.length && (
                   <button
                     onClick={() => setLightboxIndex(0)}
-                    className="w-full py-2 text-center font-mono text-xs text-accent-teal hover:underline underline-offset-4 transition-colors"
+                    className="w-full py-2 text-center font-mono text-xs opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
                   >
                     View gallery ({location.photos.length} photos)
                   </button>

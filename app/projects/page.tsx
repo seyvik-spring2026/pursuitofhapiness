@@ -75,13 +75,13 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
             </div>
           </div>
 
-          {/* Title and tag overlay */}
+          {/* Title and blurb overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-5">
             <h2 className="text-lg md:text-xl font-bold text-white">
               {project.title}
             </h2>
-            <p className="font-mono text-xs text-white/60 tracking-wide mt-1">
-              {project.tag}
+            <p className="text-sm text-white/60 leading-snug mt-1 line-clamp-2">
+              {project.context.split('\n\n')[0]}
             </p>
           </div>
         </div>

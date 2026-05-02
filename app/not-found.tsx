@@ -34,7 +34,7 @@ export default function NotFound() {
           </p>
           <Link
             href="/"
-            className="inline-block font-mono text-sm text-accent-teal hover:underline underline-offset-4"
+            className="inline-block font-mono text-sm opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
           >
             Back to safety
           </Link>

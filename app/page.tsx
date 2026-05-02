@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { PROJECTS } from '@/lib/projects';
@@ -68,46 +67,12 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
             <h3 className="text-lg md:text-xl font-bold text-white">
               {project.title}
             </h3>
-            <p className="font-mono text-xs text-white/60 tracking-wide mt-1">
-              {project.tag}
+            <p className="text-sm text-white/60 leading-snug mt-1 line-clamp-2">
+              {project.context.split('\n\n')[0]}
             </p>
           </div>
         </div>
       </Link>
-    </motion.div>
-  );
-}
-
-function FlyingPigeon() {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (sessionStorage.getItem('pigeon-flew')) return;
-    const timer = setTimeout(() => {
-      setShow(true);
-      sessionStorage.setItem('pigeon-flew', '1');
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!show) return null;
-
-  return (
-    <motion.div
-      initial={{ x: '-60px', opacity: 0 }}
-      animate={{ x: 'calc(100vw + 60px)', opacity: [0, 1, 1, 1, 0] }}
-      transition={{ duration: 12, ease: 'linear' }}
-      onAnimationComplete={() => setShow(false)}
-      className="fixed z-20 pointer-events-none"
-      style={{ top: '35vh' }}
-    >
-      <Image
-        src="https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/pigeon-widget.png"
-        alt=""
-        width={40}
-        height={27}
-        className="opacity-60"
-      />
     </motion.div>
   );
 }
@@ -135,9 +100,9 @@ function ScrollIndicator() {
       /* Using bottom positioning relative to the hero section */
     >
       <motion.svg
-        animate={{ y: [0, 6, 0] }}
+        animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        className="w-6 h-6 opacity-40"
+        className="w-8 h-8 opacity-60"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -145,7 +110,7 @@ function ScrollIndicator() {
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
       </motion.svg>
-      <span className="font-mono text-xs opacity-30 lowercase">
+      <span className="font-mono text-sm opacity-50 lowercase">
         scroll to watch the sunset
       </span>
     </motion.div>
@@ -155,7 +120,6 @@ function ScrollIndicator() {
 export default function Home() {
   return (
     <main className="min-h-[500vh]">
-      <FlyingPigeon />
       {/* ─── HERO SECTION ─────────────────────────────────────── */}
       <section className="relative min-h-screen flex items-center justify-center px-6 md:px-12 pt-14">
         <motion.div
@@ -216,7 +180,7 @@ export default function Home() {
             </p>
             <Link
               href="/about"
-              className="inline-block mt-6 font-mono text-sm text-accent-teal hover:underline underline-offset-4 transition-colors"
+              className="inline-block mt-6 font-mono text-sm opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
             >
               More about me
             </Link>
@@ -239,7 +203,7 @@ export default function Home() {
             <div className="space-y-3 font-mono text-sm">
               <a
                 href="mailto:contact@seyvikmagon.com"
-                className="block text-accent-teal hover:underline underline-offset-4"
+                className="block opacity-80 hover:opacity-100 hover:underline underline-offset-4 transition-all"
               >
                 contact@seyvikmagon.com
               </a>

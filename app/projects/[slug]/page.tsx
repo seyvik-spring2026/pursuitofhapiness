@@ -15,9 +15,25 @@ export default function ProjectPage() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [unmutedIndex, setUnmutedIndex] = useState<number | null>(null);
+  const [unmutedIndex, setUnmutedIndex] = useState<number | null>(0);
+  const initializedRef = useRef(false);
 
   const videosWithSrc = project?.videos.filter((v) => v.src) ?? [];
+
+  // Autoplay first video unmuted on mount
+  useEffect(() => {
+    if (initializedRef.current || !videosWithSrc.length) return;
+    initializedRef.current = true;
+    const vid = videoRefs.current[0];
+    if (!vid) return;
+    vid.muted = false;
+    vid.controls = true;
+    vid.play().catch(() => {
+      // Browsers may block unmuted autoplay; fall back to muted
+      vid.muted = true;
+      vid.play().catch(() => {});
+    });
+  }, [videosWithSrc.length]);
 
   // Track which video is in view via IntersectionObserver
   useEffect(() => {
@@ -30,7 +46,10 @@ export default function ProjectPage() {
         ([entry]) => {
           if (entry.isIntersecting) {
             setCurrentIndex(i);
-            vid.currentTime = 0;
+            // Don't restart the first video on initial mount
+            if (i !== 0 || hasScrolled) {
+              vid.currentTime = 0;
+            }
             vid.play().catch(() => {});
           } else {
             vid.pause();
@@ -43,7 +62,7 @@ export default function ProjectPage() {
     });
 
     return () => observers.forEach((o) => o.disconnect());
-  }, [videosWithSrc.length]);
+  }, [videosWithSrc.length, hasScrolled]);
 
   // Track first scroll to hide the hint
   useEffect(() => {
@@ -85,7 +104,7 @@ export default function ProjectPage() {
           <h1 className="text-2xl font-bold mb-4">Project not found</h1>
           <Link
             href="/projects"
-            className="text-accent-teal font-mono text-sm hover:underline underline-offset-4"
+            className="font-mono text-sm opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
           >
             Back to all projects
           </Link>
@@ -110,11 +129,11 @@ export default function ProjectPage() {
                 {videosWithSrc.map((video, i) => (
                   <div
                     key={i}
-                    className="snap-start w-full flex items-center justify-center"
+                    className="snap-start w-full flex items-center justify-center relative"
                     style={{ height: '85vh' }}
                   >
                     <div
-                      className="relative w-full h-full flex items-center justify-center cursor-pointer"
+                      className="relative w-full h-full flex items-center justify-center cursor-pointer group"
                       onClick={() => handleVideoClick(i)}
                     >
                       <video
@@ -122,10 +141,11 @@ export default function ProjectPage() {
                           videoRefs.current[i] = el;
                         }}
                         src={video.src}
-                        muted
+                        muted={i !== 0}
                         loop
                         playsInline
                         preload="metadata"
+                        controls={i === 0}
                         className="max-h-full w-auto object-contain"
                         style={{
                           aspectRatio: '9/16',
@@ -133,20 +153,10 @@ export default function ProjectPage() {
                           borderRadius: 0,
                         }}
                       />
-                      {/* Unmute hint overlay */}
-                      {unmutedIndex !== i && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                            <svg
-                              className="w-5 h-5 text-black/70"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
-                            </svg>
-                          </div>
-                        </div>
-                      )}
+                      {/* Video label */}
+                      <span className="absolute bottom-4 left-4 font-mono text-[11px] text-white/50 uppercase tracking-wider pointer-events-none">
+                        {video.label}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -165,7 +175,7 @@ export default function ProjectPage() {
                       transition={{ duration: 1.5, repeat: Infinity }}
                       className="font-mono text-[10px] opacity-40"
                     >
-                      scroll for more ↓
+                      scroll for more
                     </motion.span>
                   )}
                 </div>
@@ -195,39 +205,6 @@ export default function ProjectPage() {
                   </p>
                 ))}
               </div>
-
-              {/* Video labels list */}
-              {videosWithSrc.length > 1 && (
-                <div className="mt-10">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] opacity-30 mb-3">
-                    Videos
-                  </p>
-                  <ul className="space-y-2">
-                    {videosWithSrc.map((video, i) => (
-                      <li key={i}>
-                        <button
-                          onClick={() => {
-                            const container = scrollContainerRef.current;
-                            if (container) {
-                              container.scrollTo({
-                                top: i * container.clientHeight,
-                                behavior: 'smooth',
-                              });
-                            }
-                          }}
-                          className={`font-mono text-sm transition-opacity ${
-                            currentIndex === i
-                              ? 'opacity-80 text-accent-teal'
-                              : 'opacity-40 hover:opacity-60'
-                          }`}
-                        >
-                          {video.label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
           </div>
         </div>
