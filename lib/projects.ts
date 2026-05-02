@@ -1,8 +1,3 @@
-export interface ProjectStat {
-  value: string;
-  label: string;
-}
-
 export interface ProjectVideo {
   label: string;
   src?: string;
@@ -13,7 +8,6 @@ export interface ProjectData {
   tag: string;
   postmark: string;
   context: string;
-  stats: ProjectStat[];
   videos: ProjectVideo[];
   previewVideo?: string;
 }
@@ -21,15 +15,10 @@ export interface ProjectData {
 export const PROJECTS: Record<string, ProjectData> = {
   truemed: {
     title: 'Truemed',
-    tag: 'Fintech \u00b7 Content',
+    tag: 'Fintech · Content',
     postmark: 'NYC, NY',
     context:
-      'Truemed is a fintech company that makes it possible for people to use their HSA/FSA to actually shop for their health: Pelotons, smart mattresses, red light therapy, saunas.\n\nI started a cinematic customer success story campaign and began building out their UGC.\n\nMy first video became Truemed\'s highest-performing TikTok ever.',
-    stats: [
-      { value: '#1', label: 'TikTok Performance' },
-      { value: '3', label: 'Videos Produced' },
-      { value: 'UGC', label: 'Campaign Type' },
-    ],
+      'Truemed is a payments platform that makes it simple for people to use their pre-tax dollars on preventative health products like a Peloton, smart mattresses, red light therapy, even a cold plunge. In December 2025, Truemed closed a $34 million Series A led by a16z after experiencing 3x revenue growth for two consecutive years.\n\nTheir next unlock wasn\'t the product. It was cultural awareness. Recognizing that Truemed\'s happiest customers were an underutilized growth channel, I launched a customer success story campaign to sit down with people like Stephanie who transformed their lives through preventative health and tell those stories cinematically.\n\nI built out a content strategy across three verticals designed to drive trust and awareness in a space most Americans know almost nothing about.\n\nThe result: Truemed\'s highest-engagement Instagram Reel (8.2K views, 252 interactions, 30 saves), and their top-performing TikTok and YouTube Short.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/truemed/truemed-customer-story.mp4',
     videos: [
       { label: 'Customer Success Story', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/truemed/truemed-customer-story.mp4' },
@@ -39,14 +28,10 @@ export const PROJECTS: Record<string, ProjectData> = {
   },
   'mgmt-boston': {
     title: 'MGMT Boston',
-    tag: 'Startup Events \u00b7 Recurring',
+    tag: 'Startup Events · Recurring',
     postmark: 'Boston, MA',
     context:
-      'MGMT Boston is the connective tissue of the Boston startup ecosystem. Pitch competitions, networking events, founder meetups.\n\nI capture the energy of these events in a way that makes people wish they were there, and makes the people who were there want to come back.',
-    stats: [
-      { value: '10+', label: 'Events Covered' },
-      { value: 'Recurring', label: 'Partnership' },
-    ],
+      'I worked directly with Matt Crane, the founder of MGMT Boston, to support his larger goal: help grow the Boston startup ecosystem.\n\nThis meant going to pitch comps, networking events, founder meetups, and telling these stories. My goal was to capture the energy of these events in a way that makes people wish they were there, and makes the people who were there want to come back.\n\nDuring my time with Matt, MGMT became the connective tissue of the Boston startup ecosystem. The next stop is New York City.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-giuseppe-spotlight.mp4',
     videos: [
       { label: 'Giuseppe Spotlight', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-giuseppe-spotlight.mp4' },
@@ -56,14 +41,10 @@ export const PROJECTS: Record<string, ProjectData> = {
   },
   'founder-storytelling': {
     title: 'Founder Storytelling Series',
-    tag: 'Original Series \u00b7 Personal Brand',
+    tag: 'Original Series · Personal Brand',
     postmark: 'Babson / NYC',
     context:
-      'Understanding who founders are beyond their product. What makes them tick, what keeps them going, what they wish they knew.\n\nFeaturing founders of Clave, Speakeasy, DamFellows, and DesiEats.',
-    stats: [
-      { value: '4', label: 'Founders Featured' },
-      { value: 'Original', label: 'Series Format' },
-    ],
+      'This is a series where I tell the stories of the most ambitious type of person: founders.\n\nI\'m fascinated with who these people are beyond their product. How do you deal with the stressful road you are taking, and what gets you out of bed every morning to do it?\n\nThis is my attempt at getting to the bottom of those questions.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4',
     videos: [
       { label: 'This is Mateo (Clave)', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4' },
@@ -74,14 +55,10 @@ export const PROJECTS: Record<string, ProjectData> = {
   },
   'cash-flows': {
     title: 'Cash Flows (Stripe Series)',
-    tag: 'Educational Content \u00b7 Fintech',
+    tag: 'Educational Content · Fintech',
     postmark: 'NYC, NY',
     context:
-      'Breaking down complex fintech concepts in a way that feels intuitive, not overwhelming. Making the financial infrastructure that powers the internet feel approachable.',
-    stats: [
-      { value: 'Stripe', label: 'Featured Platform' },
-      { value: 'Edu', label: 'Content Type' },
-    ],
+      'The biggest bottleneck to widespread adoption of anything is complexity, or at least, the perception of it.\n\nStripe sits at the center of the payments ecosystem, powering how money moves. Faster settlement, safer transactions, infrastructure built to scale. The financial infrastructure that powers the internet is deeply important, but most people have no idea how any of it works.\n\nThese videos are my attempt to change that. Breaking down complex fintech concepts in a way that actually makes sense.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/stripe/cash-flows.mp4',
     videos: [
       { label: 'Cash Flows', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/stripe/cash-flows.mp4' },
@@ -90,56 +67,16 @@ export const PROJECTS: Record<string, ProjectData> = {
   },
   arcangel: {
     title: 'ArcAngel Pitch Comp',
-    tag: 'Events \u00b7 Startup Community',
+    tag: 'Events · Startup Community',
     postmark: 'Boston, MA',
     context:
-      'Event coverage of the ArcAngel pitch competition, including the Ping Boys founder event. Capturing the high-stakes energy of founders putting it all on the line.',
-    stats: [
-      { value: '1', label: 'Event' },
-      { value: 'Live', label: 'Coverage Type' },
-    ],
+      'ArcAngel and SHOPLINE hosted a $100,000 pitch competition at Silicon Valley Bank, bringing startups from across the country to compete.\n\nI was brought on to cover the event. But the best media not only encapsulates, but elevates. I took care of event coverage, adding to the energy with founder interviews, and weaved in a narrative following an up and coming startup, ping!',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/ArcAngel Pitch Comp/arcangel-event-overview.mp4',
     videos: [
       { label: 'Event Overview', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/ArcAngel Pitch Comp/arcangel-event-overview.mp4' },
       { label: 'Ping Narrative', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/ArcAngel Pitch Comp/ping-narrative.mp4' },
       { label: 'Interview Spotlight', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/ArcAngel Pitch Comp/interview-spotlight.mp4' },
       { label: 'Interview Spotlight 2', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/ArcAngel Pitch Comp/interview-spotlight-2.mp4' },
-    ],
-  },
-  personal: {
-    title: 'Personal Content',
-    tag: 'Personal Brand \u00b7 7.5M+ Views',
-    postmark: 'NYC / Babson',
-    context:
-      'Soccer and intramural highlight videos, day in the life content, and the barber video that drove 12+ new recurring clients with an estimated $8K projected annual value.\n\nBroader UGC and personal brand content that has generated 7.5M+ organic views across platforms.',
-    stats: [
-      { value: '7.5M+', label: 'Organic Views' },
-      { value: '12+', label: 'Clients (Barber)' },
-      { value: '$8K', label: 'Projected Annual Value' },
-    ],
-    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/personal/intramural-soccer.mp4',
-    videos: [
-      { label: 'Intramural Soccer', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/personal/intramural-soccer.mp4' },
-      { label: 'Day in the Life (OG)', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/personal/day-in-the-life-og.mp4' },
-      { label: 'Pursuit of Happiness', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/personal/pursuit-of-hapiness.mp4' },
-      { label: 'Esto es Miami', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/personal/esto-es-miami.mp4' },
-      { label: 'Chinatown', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/personal/chinatown.mp4' },
-    ],
-  },
-  'catskills-airbnb': {
-    title: 'Catskills Airbnb',
-    tag: 'Hospitality \u00b7 Operations',
-    postmark: 'Walton, NY',
-    context:
-      'A profitable Airbnb operation in the Catskills. 40+ stays, 5-star average rating, 90% summer occupancy. Built the listing, managed operations, optimized pricing.',
-    stats: [
-      { value: '$170K+', label: 'Total Revenue' },
-      { value: '5\u2605', label: 'Average Rating' },
-      { value: '90%', label: 'Summer Occupancy' },
-      { value: '40+', label: 'Stays' },
-    ],
-    videos: [
-      { label: 'Property Tour' },
     ],
   },
 };

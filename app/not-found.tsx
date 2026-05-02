@@ -15,7 +15,7 @@ export default function NotFound() {
           className="mb-6"
         >
           <Image
-            src="/site-media/Entergalactic/pigeon-widget.png"
+            src="https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/pigeon-widget.png"
             alt="A very judgmental pigeon"
             width={200}
             height={200}

@@ -71,25 +71,6 @@ export default function ProjectPage() {
             </div>
           </motion.div>
 
-          {/* ─── PROOF (STATS) ────────────────────────────────── */}
-          <motion.div {...fadeUp}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              {project.stats.map((stat, i) => (
-                <div
-                  key={i}
-                  className="postcard p-6 text-center"
-                >
-                  <p className="text-3xl md:text-4xl font-bold mb-1">
-                    {stat.value}
-                  </p>
-                  <p className="font-mono text-[10px] opacity-40 uppercase tracking-wider">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
           {/* ─── WORK (VIDEOS) ────────────────────────────────── */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {project.videos.map((video, i) => (

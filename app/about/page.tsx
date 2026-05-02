@@ -20,39 +20,39 @@ interface LocationData {
 const LOCATIONS: LocationData[] = [
   {
     name: 'Battery Park City, NYC',
-    illustration: '/site-media/Entergalactic/batterypark-city.png',
+    illustration: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/batterypark-city.png',
     photos: [
-      '/site-media/nyc/south-cove-in-battery.jpg',
-      '/site-media/nyc/hudson-river-park-with-manhattan-financial-district-skyscrapers-sunset-F64JPW.jpg',
-      '/site-media/nyc/IMG_6024.png',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/nyc/south-cove-in-battery.jpg',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/nyc/hudson-river-park-with-manhattan-financial-district-skyscrapers-sunset-F64JPW.jpg',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/nyc/IMG_6024.png',
     ],
   },
   {
     name: 'Chelsea, NYC',
-    illustration: '/site-media/Entergalactic/chelsea.png',
+    illustration: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/chelsea.png',
     photos: [
-      '/site-media/Entergalactic/wallstreet-selfie.png',
-      '/site-media/Entergalactic/battery_park-betterphoto.png',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/wallstreet-selfie.png',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/battery_park-betterphoto.png',
     ],
   },
   {
     name: 'Babson College',
-    illustration: '/site-media/Entergalactic/babson-field.png',
+    illustration: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/babson-field.png',
     photos: [],
   },
   {
     name: 'Madrid, Casa de Campo',
-    illustration: '/site-media/Entergalactic/madrid-casa-de-camppo.png',
+    illustration: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/madrid-casa-de-camppo.png',
     photos: [
-      '/site-media/madrid/DSC07993.JPG',
-      '/site-media/madrid/IMG_0093.JPG',
-      '/site-media/madrid/P1010128.JPG',
-      '/site-media/madrid/IMG_3584.jpeg',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/madrid/DSC07993.JPG',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/madrid/IMG_0093.JPG',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/madrid/P1010128.JPG',
+      'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/madrid/IMG_3584.jpeg',
     ],
   },
   {
     name: 'SF Chinatown',
-    illustration: '/site-media/Entergalactic/chinatown.jpeg',
+    illustration: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/chinatown.jpeg',
     photos: [],
   },
 ];

@@ -18,8 +18,6 @@ const PROJECT_ORDER = [
   'founder-storytelling',
   'cash-flows',
   'arcangel',
-  'personal',
-  'catskills-airbnb',
 ];
 
 export default function ProjectsPage() {
