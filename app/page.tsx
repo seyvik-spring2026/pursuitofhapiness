@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { PROJECTS } from '@/lib/projects';
@@ -77,6 +78,40 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
   );
 }
 
+function FlyingPigeon() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem('pigeon-flew')) return;
+    const timer = setTimeout(() => {
+      setShow(true);
+      sessionStorage.setItem('pigeon-flew', '1');
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <motion.div
+      initial={{ x: '-60px', opacity: 0 }}
+      animate={{ x: 'calc(100vw + 60px)', opacity: [0, 1, 1, 1, 0] }}
+      transition={{ duration: 12, ease: 'linear' }}
+      onAnimationComplete={() => setShow(false)}
+      className="fixed z-20 pointer-events-none"
+      style={{ top: '35vh' }}
+    >
+      <Image
+        src="https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/pigeon-widget.png"
+        alt=""
+        width={40}
+        height={27}
+        className="opacity-60"
+      />
+    </motion.div>
+  );
+}
+
 function ScrollIndicator() {
   const [opacity, setOpacity] = useState(1);
 
@@ -120,6 +155,7 @@ function ScrollIndicator() {
 export default function Home() {
   return (
     <main className="min-h-[500vh]">
+      <FlyingPigeon />
       {/* ─── HERO SECTION ─────────────────────────────────────── */}
       <section className="relative min-h-screen flex items-center justify-center px-6 md:px-12 pt-14">
         <motion.div
