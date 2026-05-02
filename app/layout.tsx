@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import SunsetSky from '@/components/SunsetSky';
 import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Seyvik Magon',
@@ -19,6 +20,7 @@ export default function RootLayout({
         <SunsetSky />
         <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );

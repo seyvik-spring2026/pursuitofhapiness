@@ -42,7 +42,7 @@ export default function Nav() {
           : ''
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between h-14">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
         {/* Logo */}
         <Link
           href="/"
@@ -54,12 +54,12 @@ export default function Nav() {
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm tracking-wide transition-colors ${
+              className={`text-[15px] tracking-wide transition-colors ${
                 darkMode
                   ? 'text-white/60 hover:text-white'
                   : 'text-black/50 hover:text-black'
