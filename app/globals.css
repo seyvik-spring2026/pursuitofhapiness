@@ -194,6 +194,15 @@ main {
   background: linear-gradient(transparent 40%, rgba(0,0,0,0.6));
 }
 
+/* ─── Scrollbar Hide ──────────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ─── Typography Helpers ───────────────────────────────────────────── */
 .font-serif-italic {
   font-family: "Crimson Text", Georgia, serif;
