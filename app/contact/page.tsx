@@ -11,9 +11,9 @@ const fadeUp = {
 
 export default function ContactPage() {
   return (
-    <main className="min-h-[250vh] pt-24 pb-32">
+    <main className="min-h-[250vh] pt-32 md:pt-40 pb-32">
       <section className="px-6 md:px-12">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto text-center">
           <motion.div {...fadeUp}>
             <p className="font-serif-italic text-3xl md:text-4xl lg:text-5xl leading-snug mb-10">
               The work you&apos;ve put in deserves content that can encapsulate it.
@@ -38,7 +38,7 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.3 }}>
-            <div className="flex items-center gap-6 mt-10">
+            <div className="flex items-center justify-center gap-6 mt-10">
               {/* Instagram */}
               <a
                 href="https://instagram.com/seyvikmagon"
@@ -83,7 +83,7 @@ export default function ContactPage() {
           <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.4 }}>
             <a
               href="mailto:contact@seyvikmagon.com"
-              className="inline-block mt-12 px-8 py-3 border border-current font-mono text-sm tracking-wide opacity-50 hover:opacity-90 transition-all"
+              className="inline-block mt-12 px-8 py-3 bg-black text-white font-mono text-sm tracking-wide hover:bg-black/80 transition-colors"
             >
               Let&apos;s work together
             </a>

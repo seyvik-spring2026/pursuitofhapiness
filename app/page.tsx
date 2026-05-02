@@ -68,7 +68,7 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
               {project.title}
             </h3>
             <p className="text-sm text-white/60 leading-snug mt-1 line-clamp-2">
-              {project.context.split('\n\n')[0]}
+              {project.context.split('\n\n')[0]}...
             </p>
           </div>
         </div>

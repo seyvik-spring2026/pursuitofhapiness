@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lightbox from '@/components/Lightbox';
@@ -14,14 +14,132 @@ const fadeUp = {
   transition: { duration: 0.7, ease: 'easeOut' },
 };
 
-// ─── Personal Videos ─────────────────────────────────────────
-const PERSONAL_VIDEOS = [
-  { label: 'Intramural Soccer', src: `${R2}/Videos/personal/intramural-soccer.mp4` },
-  { label: 'Day in the Life', src: `${R2}/Videos/personal/day-in-the-life-og.mp4` },
+// ─── Personal Videos (full list for the Reels viewer) ────────
+const ALL_PERSONAL_VIDEOS = [
+  { label: 'Day in the Life 2', src: `${R2}/Videos/personal/day-in-life-2.mp4` },
   { label: 'Pursuit of Happiness', src: `${R2}/Videos/personal/pursuit-of-hapiness.mp4` },
+  { label: 'Intramural Soccer', src: `${R2}/Videos/personal/intramural-soccer.mp4` },
   { label: 'Esto es Miami', src: `${R2}/Videos/personal/esto-es-miami.mp4` },
+  { label: 'Day in the Life', src: `${R2}/Videos/personal/day-in-the-life-og.mp4` },
   { label: 'Chinatown', src: `${R2}/Videos/personal/chinatown.mp4` },
 ];
+
+// The 3 thumbnails shown on the page
+const THUMBNAIL_VIDEOS = ALL_PERSONAL_VIDEOS.slice(0, 3);
+
+// ─── Reels Viewer Overlay ────────────────────────────────────
+function ReelsViewer({
+  videos,
+  startIndex,
+  onClose,
+}: {
+  videos: { label: string; src: string }[];
+  startIndex: number;
+  onClose: () => void;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
+  const hasScrolledRef = useRef(false);
+
+  // Scroll to the start index on mount
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    container.scrollTo({ top: startIndex * container.clientHeight });
+  }, [startIndex]);
+
+  // IntersectionObserver for autoplay
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    videoRefs.current.forEach((vid, i) => {
+      if (!vid) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setCurrentIndex(i);
+            vid.currentTime = 0;
+            vid.muted = false;
+            vid.play().catch(() => {
+              vid.muted = true;
+              vid.play().catch(() => {});
+            });
+          } else {
+            vid.pause();
+          }
+        },
+        { threshold: 0.6 }
+      );
+      observer.observe(vid);
+      observers.push(observer);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black">
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="fixed top-5 right-5 z-[110] w-11 h-11 flex items-center justify-center rounded-full bg-white/15 border border-white/25 hover:bg-white/25 transition-colors"
+        aria-label="Close"
+      >
+        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* Counter */}
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[110] font-mono text-sm text-white/70">
+        {currentIndex + 1} / {videos.length}
+      </div>
+
+      {/* Scroll container */}
+      <div
+        ref={scrollRef}
+        className="w-full h-full overflow-y-auto snap-y snap-mandatory"
+      >
+        {videos.map((video, i) => (
+          <div
+            key={i}
+            className="snap-start w-full h-screen flex items-center justify-center relative"
+          >
+            <video
+              ref={(el) => { videoRefs.current[i] = el; }}
+              src={video.src}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              controls
+              className="max-h-full w-auto object-contain"
+              style={{ aspectRatio: '9/16', maxWidth: '100%', borderRadius: 0 }}
+            />
+            {/* Label above controls */}
+            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 pointer-events-none">
+              <span className="font-mono text-sm text-white/60 tracking-wide drop-shadow-lg">
+                {video.label}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // ─── Location Data ───────────────────────────────────────────
 interface LocationData {
@@ -108,78 +226,6 @@ const LOCATIONS: LocationData[] = [
   },
 ];
 
-// ─── Personal Video Card ─────────────────────────────────────
-function PersonalVideoCard({ video }: { video: { label: string; src: string } }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
-  const [unmuted, setUnmuted] = useState(false);
-
-  const handleMouseEnter = () => {
-    const vid = videoRef.current;
-    if (!vid || unmuted) return;
-    vid.currentTime = 0;
-    vid.play().catch(() => {});
-    setPlaying(true);
-  };
-
-  const handleMouseLeave = () => {
-    const vid = videoRef.current;
-    if (!vid || unmuted) return;
-    vid.pause();
-    setPlaying(false);
-  };
-
-  const handleClick = () => {
-    const vid = videoRef.current;
-    if (!vid) return;
-    if (unmuted) {
-      vid.muted = true;
-      vid.controls = false;
-      setUnmuted(false);
-    } else {
-      vid.muted = false;
-      vid.controls = true;
-      vid.play().catch(() => {});
-      setUnmuted(true);
-      setPlaying(true);
-    }
-  };
-
-  return (
-    <div
-      className="flex-shrink-0 w-[260px] md:w-[300px] cursor-pointer group"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
-      <div className="relative overflow-hidden" style={{ aspectRatio: '9/16', borderRadius: 0 }}>
-        <video
-          ref={videoRef}
-          src={video.src}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ borderRadius: 0 }}
-        />
-        {!playing && !unmuted && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-            <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center shadow-lg">
-              <svg className="w-5 h-5 text-black/70 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
-        )}
-        <span className="absolute bottom-3 left-3 font-mono text-[10px] text-white/50 uppercase tracking-wider">
-          {video.label}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 // ─── Location Card ───────────────────────────────────────────
 function LocationCard({ location }: { location: LocationData }) {
   const [expanded, setExpanded] = useState(false);
@@ -190,7 +236,6 @@ function LocationCard({ location }: { location: LocationData }) {
   return (
     <>
       <div className="postcard overflow-hidden">
-        {/* Illustration */}
         <button
           onClick={() => hasMedia && setExpanded(!expanded)}
           className={`relative w-full aspect-[4/3] overflow-hidden block ${
@@ -213,14 +258,12 @@ function LocationCard({ location }: { location: LocationData }) {
           )}
         </button>
 
-        {/* Location name */}
         <div className="p-4 pb-3">
           <p className="font-mono text-xs text-black/50 tracking-wide uppercase">
             {location.name}
           </p>
         </div>
 
-        {/* Expanded preview */}
         <AnimatePresence>
           {expanded && hasMedia && (
             <motion.div
@@ -231,7 +274,6 @@ function LocationCard({ location }: { location: LocationData }) {
               className="overflow-hidden"
             >
               <div className="px-4 pb-4">
-                {/* Photo previews */}
                 {previewPhotos.length > 0 && (
                   <div className="grid grid-cols-2 gap-2 mb-3">
                     {previewPhotos.map((photo, i) => (
@@ -252,7 +294,6 @@ function LocationCard({ location }: { location: LocationData }) {
                   </div>
                 )}
 
-                {/* Videos */}
                 {location.videos && location.videos.length > 0 && (
                   <div className="grid grid-cols-1 gap-2 mb-3">
                     {location.videos.map((videoSrc, i) => (
@@ -263,13 +304,11 @@ function LocationCard({ location }: { location: LocationData }) {
                         playsInline
                         preload="metadata"
                         className="w-full rounded-lg"
-                        style={{ borderRadius: '0.5rem' }}
                       />
                     ))}
                   </div>
                 )}
 
-                {/* View gallery button */}
                 {location.photos.length > previewPhotos.length && (
                   <button
                     onClick={() => setLightboxIndex(0)}
@@ -284,7 +323,6 @@ function LocationCard({ location }: { location: LocationData }) {
         </AnimatePresence>
       </div>
 
-      {/* Lightbox */}
       {lightboxIndex !== null && location.photos.length > 0 && (
         <Lightbox
           images={location.photos}
@@ -300,21 +338,54 @@ function LocationCard({ location }: { location: LocationData }) {
 
 // ─── Page ────────────────────────────────────────────────────
 export default function AboutPage() {
+  const [reelsStartIndex, setReelsStartIndex] = useState<number | null>(null);
+
   return (
     <main className="min-h-[350vh] pt-24 pb-32">
       <section className="px-6 md:px-12">
         <div className="max-w-4xl mx-auto">
           {/* ─── PERSONAL VIDEOS ─────────────────────────────── */}
           <motion.div {...fadeUp}>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] opacity-35 mb-6">
-              Me, unfiltered
-            </p>
+            <div className="flex items-baseline gap-3 mb-6">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] opacity-35">
+                Scroll my Reels
+              </p>
+              <span className="font-mono text-xs opacity-25">
+                {ALL_PERSONAL_VIDEOS.length} videos
+              </span>
+            </div>
           </motion.div>
 
           <motion.div {...fadeUp} className="mb-16">
-            <div className="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 scrollbar-hide">
-              {PERSONAL_VIDEOS.map((video, i) => (
-                <PersonalVideoCard key={i} video={video} />
+            <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-3xl mx-auto">
+              {THUMBNAIL_VIDEOS.map((video, i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden cursor-pointer group"
+                  style={{ aspectRatio: '9/16' }}
+                  onClick={() => setReelsStartIndex(i)}
+                >
+                  <video
+                    src={video.src}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ borderRadius: 0 }}
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+                  {/* Play icon */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center shadow-lg">
+                      <svg className="w-5 h-5 text-black/70 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="absolute bottom-3 left-3 font-mono text-[10px] text-white/60 uppercase tracking-wider">
+                    {video.label}
+                  </span>
+                </div>
               ))}
             </div>
           </motion.div>
@@ -322,33 +393,11 @@ export default function AboutPage() {
           {/* ─── BIO ──────────────────────────────────────────── */}
           <motion.div {...fadeUp}>
             <div className="postcard p-8 md:p-12 mb-16 max-w-3xl mx-auto">
-              <p className="font-serif-italic text-xl md:text-2xl text-black/70 leading-relaxed mb-6">
+              <p className="font-serif-italic text-xl md:text-2xl text-black/70 leading-relaxed">
                 I&apos;m fascinated by people: what gets them out of bed every morning,
                 the things that make each of them unique. That fascination turned
-                into telling the stories of founders, then a way of thinking about
-                how stories drive growth.
-              </p>
-
-              <p className="text-black/60 leading-relaxed mb-4">
-                I studied finance at Babson. I interned at Fortress Investment Group
-                doing private credit, at Mantra Investment Partners doing private
-                equity, at Lotus Equity Partners doing commercial real estate. I
-                studied abroad in Madrid at IE University.
-              </p>
-
-              <p className="font-serif-italic text-lg text-black/65 leading-relaxed mb-4">
-                And then I picked up a camera.
-              </p>
-
-              <p className="text-black/60 leading-relaxed mb-4">
-                I also run an Airbnb in the Catskills that&apos;s generated $170K+ in
-                revenue. I co-founded an e-commerce brand that turned $4K+ in
-                profit in three months. I captain the Babson club soccer team and
-                secured $19K+ in funding for the program.
-              </p>
-
-              <p className="font-mono text-sm text-black/45 mt-6">
-                Currently based in New York City. Graduating May 2026.
+                into telling the stories of founders, and now helping startups
+                utilize storytelling to drive growth.
               </p>
             </div>
           </motion.div>
@@ -373,6 +422,15 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Reels viewer overlay */}
+      {reelsStartIndex !== null && (
+        <ReelsViewer
+          videos={ALL_PERSONAL_VIDEOS}
+          startIndex={reelsStartIndex}
+          onClose={() => setReelsStartIndex(null)}
+        />
+      )}
     </main>
   );
 }

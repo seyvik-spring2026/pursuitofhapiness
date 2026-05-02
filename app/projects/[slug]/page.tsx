@@ -153,10 +153,12 @@ export default function ProjectPage() {
                           borderRadius: 0,
                         }}
                       />
-                      {/* Video label */}
-                      <span className="absolute bottom-4 left-4 font-mono text-[11px] text-white/50 uppercase tracking-wider pointer-events-none">
-                        {video.label}
-                      </span>
+                      {/* Video label - positioned above controls bar */}
+                      <div className="absolute bottom-16 left-4 pointer-events-none">
+                        <span className="font-mono text-sm text-white/70 tracking-wide drop-shadow-lg">
+                          {video.label}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}

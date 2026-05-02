@@ -16,8 +16,8 @@ const PROJECT_ORDER = [
   'truemed',
   'mgmt-boston',
   'founder-storytelling',
-  'cash-flows',
   'arcangel',
+  'cash-flows',
 ];
 
 function ProjectCard({ slug, index }: { slug: string; index: number }) {
@@ -81,7 +81,7 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
               {project.title}
             </h2>
             <p className="text-sm text-white/60 leading-snug mt-1 line-clamp-2">
-              {project.context.split('\n\n')[0]}
+              {project.context.split('\n\n')[0]}...
             </p>
           </div>
         </div>

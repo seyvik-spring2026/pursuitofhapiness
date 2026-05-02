@@ -34,9 +34,9 @@ export const PROJECTS: Record<string, ProjectData> = {
       'I worked directly with Matt Crane, the founder of MGMT Boston, to support his larger goal: help grow the Boston startup ecosystem.\n\nThis meant going to pitch comps, networking events, founder meetups, and telling these stories. My goal was to capture the energy of these events in a way that makes people wish they were there, and makes the people who were there want to come back.\n\nDuring my time with Matt, MGMT became the connective tissue of the Boston startup ecosystem. The next stop is New York City.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-giuseppe-spotlight.mp4',
     videos: [
-      { label: 'Giuseppe Spotlight', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-giuseppe-spotlight.mp4' },
-      { label: 'Industrial Panel', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-industrial-panel.mp4' },
       { label: 'Roast My Stack', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-roast-my-stack.mp4' },
+      { label: 'Industrial Panel', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-industrial-panel.mp4' },
+      { label: 'Giuseppe Spotlight', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-giuseppe-spotlight.mp4' },
     ],
   },
   'founder-storytelling': {
@@ -47,10 +47,10 @@ export const PROJECTS: Record<string, ProjectData> = {
       'This is a series where I tell the stories of the most ambitious type of person: founders.\n\nI\'m fascinated with who these people are beyond their product. How do you deal with the stressful road you are taking, and what gets you out of bed every morning to do it?\n\nThis is my attempt at getting to the bottom of those questions.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4',
     videos: [
-      { label: 'This is Mateo (Clave)', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4' },
-      { label: 'This is Faizan (Speakeasy)', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-faizan-speakeasy.mp4' },
-      { label: 'This is Krish (DamFellows)', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-damfellows.mp4' },
-      { label: 'This is Krish (DesiEats)', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-desieats.mp4' },
+      { label: 'Mateo, Clave', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4' },
+      { label: 'Faizan, Speakeasy', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-faizan-speakeasy.mp4' },
+      { label: 'Krish, DamFellows', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-damfellows.mp4' },
+      { label: 'Krish, DesiEats', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-desieats.mp4' },
     ],
   },
   'cash-flows': {
