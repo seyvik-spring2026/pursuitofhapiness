@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import VideoCard from '@/components/VideoCard';
 import { PROJECTS } from '@/lib/projects';
 
 const fadeUp = {
@@ -16,35 +16,103 @@ const HOME_PROJECTS = ['truemed', 'mgmt-boston', 'founder-storytelling', 'cash-f
 
 function ProjectCard({ slug, index }: { slug: string; index: number }) {
   const project = PROJECTS[slug];
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    if (hovered) {
+      vid.currentTime = 0;
+      vid.play().catch(() => {});
+    } else {
+      vid.pause();
+    }
+  }, [hovered]);
+
   if (!project) return null;
 
   return (
     <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: index * 0.1 }}>
-      <Link href={`/projects/${slug}`} className="block">
-        <div className="postcard p-6 md:p-8 cursor-pointer">
-          <div className="flex items-start justify-between gap-4 mb-1">
-            <div>
-              <h3 className="text-lg md:text-xl font-bold">
-                {project.title}
-              </h3>
-              <p className="font-mono text-xs opacity-40 tracking-wide mt-1">
-                {project.tag}
-              </p>
+      <Link href={`/projects/${slug}`} className="block group">
+        <div
+          className="relative overflow-hidden cursor-pointer"
+          style={{ aspectRatio: '4/5' }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          {project.previewVideo && (
+            <video
+              ref={videoRef}
+              src={project.previewVideo}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+          )}
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+              <svg className="w-6 h-6 text-black/70 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
             </div>
-            <span className="postmark">{project.postmark}</span>
           </div>
 
-          <div className="my-5">
-            <VideoCard src={project.previewVideo} aspect="4/5" />
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <h3 className="text-lg md:text-xl font-bold text-white">
+              {project.title}
+            </h3>
+            <p className="font-mono text-xs text-white/60 tracking-wide mt-1">
+              {project.tag}
+            </p>
           </div>
-
-          <p className="text-sm opacity-60 leading-relaxed">
-            {project.videos.length > 0
-              ? `${project.title}: ${project.videos.map(v => v.label).join(', ')}`
-              : ''}
-          </p>
         </div>
       </Link>
+    </motion.div>
+  );
+}
+
+function ScrollIndicator() {
+  const [opacity, setOpacity] = useState(1);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollFraction = window.scrollY / (window.innerHeight * 0.1);
+      setOpacity(Math.max(0, 1 - scrollFraction));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.2, duration: 0.8 }}
+      style={{ opacity }}
+      className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      /* Position at roughly 85vh */
+      /* Using bottom positioning relative to the hero section */
+    >
+      <motion.svg
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        className="w-6 h-6 opacity-40"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+      </motion.svg>
+      <span className="font-mono text-xs opacity-30 lowercase">
+        scroll to watch the sunset
+      </span>
     </motion.div>
   );
 }
@@ -53,7 +121,7 @@ export default function Home() {
   return (
     <main className="min-h-[500vh]">
       {/* ─── HERO SECTION ─────────────────────────────────────── */}
-      <section className="min-h-screen flex items-center justify-center px-6 md:px-12 pt-14">
+      <section className="relative min-h-screen flex items-center justify-center px-6 md:px-12 pt-14">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,6 +139,11 @@ export default function Home() {
             New York City. Babson &apos;26. Pursuit of Happiness.
           </p>
         </motion.div>
+
+        {/* Scroll indicator positioned at ~85vh */}
+        <div className="absolute bottom-[15vh] left-0 right-0 flex justify-center">
+          <ScrollIndicator />
+        </div>
       </section>
 
       {/* ─── WORK PREVIEW SECTION ─────────────────────────────── */}
