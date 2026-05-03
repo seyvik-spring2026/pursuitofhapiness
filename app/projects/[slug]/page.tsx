@@ -29,7 +29,6 @@ export default function ProjectPage() {
     vid.muted = false;
     vid.controls = true;
     vid.play().catch(() => {
-      // Browsers may block unmuted autoplay; fall back to muted
       vid.muted = true;
       vid.play().catch(() => {});
     });
@@ -46,7 +45,6 @@ export default function ProjectPage() {
         ([entry]) => {
           if (entry.isIntersecting) {
             setCurrentIndex(i);
-            // Don't restart the first video on initial mount
             if (i !== 0 || hasScrolled) {
               vid.currentTime = 0;
             }
@@ -84,7 +82,6 @@ export default function ProjectPage() {
         vid.controls = false;
         setUnmutedIndex(null);
       } else {
-        // Mute the previously unmuted video
         if (unmutedIndex !== null && videoRefs.current[unmutedIndex]) {
           videoRefs.current[unmutedIndex]!.muted = true;
           videoRefs.current[unmutedIndex]!.controls = false;
@@ -117,7 +114,6 @@ export default function ProjectPage() {
     <main className="min-h-screen pt-20 pb-16">
       <section className="px-4 md:px-12">
         <div className="max-w-7xl mx-auto">
-          {/* Desktop: side-by-side. Mobile: stacked */}
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* ─── VIDEO COLUMN ──────────────────────────────── */}
             <div className="lg:w-[60%] relative">
@@ -153,35 +149,10 @@ export default function ProjectPage() {
                           borderRadius: 0,
                         }}
                       />
-                      {/* Video label - positioned above controls bar */}
-                      <div className="absolute bottom-16 left-4 pointer-events-none">
-                        <span className="font-mono text-sm text-white/70 tracking-wide drop-shadow-lg">
-                          {video.label}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-
-              {/* Scroll indicator */}
-              {videosWithSrc.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10">
-                  <span className="font-mono text-xs opacity-50">
-                    {currentIndex + 1} / {videosWithSrc.length}
-                  </span>
-                  {!hasScrolled && (
-                    <motion.span
-                      initial={{ opacity: 0.6 }}
-                      animate={{ opacity: [0.6, 1, 0.6], y: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      className="font-mono text-[10px] opacity-40"
-                    >
-                      scroll for more
-                    </motion.span>
-                  )}
-                </div>
-              )}
             </div>
 
             {/* ─── DESCRIPTION PANEL ─────────────────────────── */}
@@ -207,6 +178,38 @@ export default function ProjectPage() {
                   </p>
                 ))}
               </div>
+
+              {/* Scroll indicator in description panel */}
+              {videosWithSrc.length > 1 && (
+                <div className="mt-12 flex flex-col items-start gap-2">
+                  <p className="text-base opacity-60">
+                    {currentIndex + 1} / {videosWithSrc.length}
+                  </p>
+                  {!hasScrolled && (
+                    <motion.div
+                      initial={{ opacity: 0.6 }}
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="flex items-center gap-2"
+                    >
+                      <motion.svg
+                        animate={{ y: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="w-5 h-5 opacity-50"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </motion.svg>
+                      <span className="text-sm opacity-50">
+                        Scroll for more videos
+                      </span>
+                    </motion.div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

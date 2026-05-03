@@ -32,7 +32,7 @@ export const PROJECTS: Record<string, ProjectData> = {
     postmark: 'Boston, MA',
     context:
       'I worked directly with Matt Crane, the founder of MGMT Boston, to support his larger goal: help grow the Boston startup ecosystem.\n\nThis meant going to pitch comps, networking events, founder meetups, and telling these stories. My goal was to capture the energy of these events in a way that makes people wish they were there, and makes the people who were there want to come back.\n\nDuring my time with Matt, MGMT became the connective tissue of the Boston startup ecosystem. The next stop is New York City.',
-    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-giuseppe-spotlight.mp4',
+    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-roast-my-stack.mp4',
     videos: [
       { label: 'Roast My Stack', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-roast-my-stack.mp4' },
       { label: 'Industrial Panel', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-industrial-panel.mp4' },
