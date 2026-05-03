@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_LINKS = [
@@ -34,23 +35,24 @@ export default function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? darkMode
-            ? 'bg-black/30 backdrop-blur-md border-b border-white/5'
-            : 'bg-white/20 backdrop-blur-md border-b border-black/5'
+            ? 'bg-black/15 backdrop-blur-sm'
+            : 'bg-white/10 backdrop-blur-sm'
           : ''
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
-        {/* Logo */}
-        <Link
-          href="/"
-          className={`font-mono text-sm tracking-wider transition-colors ${
-            darkMode ? 'text-white/80 hover:text-white' : 'text-black/60 hover:text-black'
-          }`}
-        >
-          SM
+        {/* Pigeon logo */}
+        <Link href="/" className="transition-opacity hover:opacity-80">
+          <Image
+            src="https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/pigeon-widget.png"
+            alt="Home"
+            width={30}
+            height={20}
+            className="object-contain"
+          />
         </Link>
 
         {/* Desktop links */}
@@ -59,7 +61,7 @@ export default function Nav() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-[15px] tracking-wide transition-colors ${
+              className={`text-base tracking-wide transition-colors ${
                 darkMode
                   ? 'text-white/60 hover:text-white'
                   : 'text-black/50 hover:text-black'
@@ -109,8 +111,8 @@ export default function Nav() {
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className={`md:hidden px-6 pb-6 pt-2 ${
               darkMode
-                ? 'bg-black/40 backdrop-blur-lg'
-                : 'bg-white/30 backdrop-blur-lg'
+                ? 'bg-black/25 backdrop-blur-sm'
+                : 'bg-white/15 backdrop-blur-sm'
             }`}
           >
             <div className="flex flex-col gap-4">
