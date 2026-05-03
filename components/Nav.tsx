@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_LINKS = [
@@ -44,13 +45,14 @@ export default function Nav() {
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link
-          href="/"
-          className={`font-mono text-sm tracking-wider transition-colors ${
-            darkMode ? 'text-white/80 hover:text-white' : 'text-black/60 hover:text-black'
-          }`}
-        >
-          SM
+        <Link href="/" className="transition-opacity hover:opacity-80">
+          <Image
+            src="https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/pigeon-widget.png"
+            alt="Home"
+            width={42}
+            height={28}
+            className="object-contain"
+          />
         </Link>
 
         {/* Desktop links */}
