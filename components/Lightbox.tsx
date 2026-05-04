@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useCallback, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface LightboxProps {
   images: string[];
@@ -11,28 +13,21 @@ interface LightboxProps {
   locationName: string;
 }
 
-export default function Lightbox({
+function LightboxContent({
   images,
   currentIndex,
   onClose,
   onNavigate,
   locationName,
 }: LightboxProps) {
-  const [loaded, setLoaded] = useState(false);
   const touchStartX = useRef(0);
 
   const goNext = useCallback(() => {
-    if (currentIndex < images.length - 1) {
-      setLoaded(false);
-      onNavigate(currentIndex + 1);
-    }
+    if (currentIndex < images.length - 1) onNavigate(currentIndex + 1);
   }, [currentIndex, images.length, onNavigate]);
 
   const goPrev = useCallback(() => {
-    if (currentIndex > 0) {
-      setLoaded(false);
-      onNavigate(currentIndex - 1);
-    }
+    if (currentIndex > 0) onNavigate(currentIndex - 1);
   }, [currentIndex, onNavigate]);
 
   useEffect(() => {
@@ -63,72 +58,179 @@ export default function Lightbox({
 
   return (
     <div
-      className="fixed inset-0 z-[100]"
+      style={{ position: 'fixed', inset: 0, zIndex: 9999 }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Backdrop */}
+      {/* Backdrop - click to close */}
       <div
-        className="absolute inset-0 bg-black/90"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        }}
         onClick={onClose}
       />
 
-      {/* Close button - always visible */}
+      {/* Close button - top right, above everything */}
       <button
-        onClick={onClose}
-        className="fixed top-5 right-5 z-[110] w-11 h-11 flex items-center justify-center rounded-full bg-black/60 border border-white/30 hover:bg-black/80 transition-colors"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        style={{
+          position: 'fixed',
+          top: 20,
+          right: 20,
+          zIndex: 10000,
+          width: 48,
+          height: 48,
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          padding: 0,
+        }}
         aria-label="Close gallery"
       >
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
 
       {/* Counter */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[110] font-mono text-sm text-white/70">
+      <div
+        style={{
+          position: 'fixed',
+          top: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10000,
+          fontFamily: '"JetBrains Mono", monospace',
+          fontSize: 14,
+          color: 'rgba(255, 255, 255, 0.7)',
+        }}
+      >
         {currentIndex + 1} / {images.length}
       </div>
 
-      {/* Image */}
-      <div className="absolute inset-0 flex items-center justify-center px-14 py-20 z-[105]">
-        <div
-          className="relative w-full h-full max-w-4xl max-h-[80vh] transition-opacity duration-200"
-          style={{ opacity: loaded ? 1 : 0.3 }}
-        >
-          <Image
-            key={images[currentIndex]}
-            src={images[currentIndex]}
-            alt={`${locationName} photo ${currentIndex + 1}`}
-            fill
-            className="object-contain"
-            sizes="90vw"
-            priority
-            onLoad={() => setLoaded(true)}
-          />
-        </div>
+      {/* Image with AnimatePresence for smooth transitions */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '80px 60px 40px 60px',
+          zIndex: 9999,
+          pointerEvents: 'none',
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              maxWidth: '1000px',
+              maxHeight: '80vh',
+            }}
+          >
+            <Image
+              src={images[currentIndex]}
+              alt={`${locationName} photo ${currentIndex + 1}`}
+              fill
+              className="object-contain"
+              sizes="90vw"
+              priority
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Nav arrows */}
       {currentIndex > 0 && (
         <button
-          onClick={goPrev}
-          className="fixed left-4 top-1/2 -translate-y-1/2 z-[110] w-11 h-11 flex items-center justify-center rounded-full bg-black/60 border border-white/20 hover:bg-black/80 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            goPrev();
+          }}
+          style={{
+            position: 'fixed',
+            left: 16,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 10000,
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            padding: 0,
+          }}
         >
-          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 19l-7-7 7-7" />
           </svg>
         </button>
       )}
       {currentIndex < images.length - 1 && (
         <button
-          onClick={goNext}
-          className="fixed right-4 top-1/2 -translate-y-1/2 z-[110] w-11 h-11 flex items-center justify-center rounded-full bg-black/60 border border-white/20 hover:bg-black/80 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            goNext();
+          }}
+          style={{
+            position: 'fixed',
+            right: 16,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 10000,
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            padding: 0,
+          }}
         >
-          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 5l7 7-7 7" />
           </svg>
         </button>
       )}
     </div>
   );
+}
+
+export default function Lightbox(props: LightboxProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(<LightboxContent {...props} />, document.body);
 }
