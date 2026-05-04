@@ -164,15 +164,15 @@ export default function ProjectPage() {
             </div>
 
             {/* ─── DESCRIPTION PANEL ─────────────────────────── */}
-            <div className="lg:w-[40%] lg:pt-4">
+            <div className="lg:w-[40%] lg:pt-2">
               <Link
                 href="/projects"
-                className="inline-block font-mono text-sm opacity-40 hover:opacity-60 transition-opacity mb-8"
+                className="inline-block font-mono text-sm opacity-40 hover:opacity-60 transition-opacity mb-6"
               >
                 ← All Projects
               </Link>
 
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-3 leading-tight">
                 {project.title}
               </h1>
               <p className="font-mono text-xs opacity-40 tracking-wide mb-8">
