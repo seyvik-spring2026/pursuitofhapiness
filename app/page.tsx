@@ -49,7 +49,7 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
               loop
               playsInline
               preload="metadata"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-[1.02]"
             />
           )}
 
