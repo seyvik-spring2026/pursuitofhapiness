@@ -16,11 +16,11 @@ const fadeUp = {
 
 // ─── Personal Videos (full list for the Reels viewer) ────────
 const ALL_PERSONAL_VIDEOS = [
-  { label: 'Day in the Life 2', src: `${R2}/Videos/personal/day-in-life-2.mp4` },
+  { label: 'Day in the Life', src: `${R2}/Videos/personal/day-in-the-life-pivot.mp4` },
   { label: 'Pursuit of Happiness', src: `${R2}/Videos/personal/pursuit-of-hapiness.mp4` },
   { label: 'Intramural Soccer', src: `${R2}/Videos/personal/intramural-soccer.mp4` },
   { label: 'Esto es Miami', src: `${R2}/Videos/personal/esto-es-miami.mp4` },
-  { label: 'Day in the Life', src: `${R2}/Videos/personal/day-in-the-life-og.mp4` },
+  { label: 'Day in the Life OG', src: `${R2}/Videos/personal/day-in-the-life-og.mp4` },
   { label: 'Chinatown', src: `${R2}/Videos/personal/chinatown.mp4` },
 ];
 
