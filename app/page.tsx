@@ -168,7 +168,7 @@ export default function Home() {
       <section className="px-6 md:px-12 py-32 md:py-40">
         <motion.div {...fadeUp} className="max-w-2xl mx-auto">
           <div className="postcard p-8 md:p-12">
-            <p className="font-serif-italic text-xl md:text-2xl leading-relaxed mb-6 opacity-75">
+            <p className="text-lg md:text-xl leading-relaxed mb-6 opacity-75">
               I&apos;m a finance student at Babson College, and for the past two
               summers I&apos;ve interned in finance, most recently as a private
               credit analyst on Wall Street. When I was very young, I used to
