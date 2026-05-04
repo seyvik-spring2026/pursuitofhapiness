@@ -256,7 +256,20 @@ const LOCATIONS: LocationData[] = [
   {
     name: 'Walton, Upstate New York',
     illustration: `${R2}/site-media/Entergalactic/walton-upstate-newyork.png`,
-    photos: [],
+    photos: [
+      `${R2}/site-media/upstate-newyork/IMG_0002.JPG`,
+      `${R2}/site-media/upstate-newyork/IMG_0030.JPG`,
+      `${R2}/site-media/upstate-newyork/IMG_0591.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_0593.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_2273.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_2351.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_2359.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_2868.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_3087.JPG`,
+      `${R2}/site-media/upstate-newyork/IMG_6477.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_9401.jpeg`,
+      `${R2}/site-media/upstate-newyork/IMG_9410.jpeg`,
+    ],
   },
 ];
 
