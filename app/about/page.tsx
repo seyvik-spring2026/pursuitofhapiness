@@ -380,13 +380,16 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           {/* ─── PERSONAL VIDEOS ─────────────────────────────── */}
           <motion.div {...fadeUp}>
-            <div className="flex items-baseline gap-3 mb-6">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] opacity-35">
+            <div className="flex items-center gap-3 mb-6">
+              <p className="text-base font-semibold">
                 Scroll my Reels
               </p>
-              <span className="font-mono text-xs opacity-25">
+              <span className="text-sm opacity-50">
                 {ALL_PERSONAL_VIDEOS.length} videos
               </span>
+              <svg className="w-5 h-5 opacity-50" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
           </motion.div>
 
