@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lightbox from '@/components/Lightbox';
@@ -27,8 +28,8 @@ const ALL_PERSONAL_VIDEOS = [
 // The 3 thumbnails shown on the page
 const THUMBNAIL_VIDEOS = ALL_PERSONAL_VIDEOS.slice(0, 3);
 
-// ─── Reels Viewer Overlay ────────────────────────────────────
-function ReelsViewer({
+// ─── Reels Viewer Overlay (rendered via Portal) ──────────────
+function ReelsViewerContent({
   videos,
   startIndex,
   onClose,
@@ -40,7 +41,6 @@ function ReelsViewer({
   const scrollRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [currentIndex, setCurrentIndex] = useState(startIndex);
-  const hasScrolledRef = useRef(false);
 
   // Scroll to the start index on mount
   useEffect(() => {
@@ -66,6 +66,7 @@ function ReelsViewer({
             });
           } else {
             vid.pause();
+            vid.muted = true;
           }
         },
         { threshold: 0.6 }
@@ -76,7 +77,7 @@ function ReelsViewer({
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  // Lock body scroll
+  // Lock body scroll + Escape key
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const onKey = (e: KeyboardEvent) => {
@@ -90,32 +91,59 @@ function ReelsViewer({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black">
+    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, backgroundColor: '#000' }}>
       {/* Close button */}
       <button
-        onClick={onClose}
-        className="fixed top-5 right-5 z-[110] w-11 h-11 flex items-center justify-center rounded-full bg-white/15 border border-white/25 hover:bg-white/25 transition-colors"
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        style={{
+          position: 'fixed',
+          top: 20,
+          right: 20,
+          zIndex: 10000,
+          width: 48,
+          height: 48,
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.25)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          padding: 0,
+        }}
         aria-label="Close"
       >
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
 
       {/* Counter */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[110] font-mono text-sm text-white/70">
+      <div style={{
+        position: 'fixed',
+        top: 24,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 10000,
+        fontFamily: '"JetBrains Mono", monospace',
+        fontSize: 14,
+        color: 'rgba(255, 255, 255, 0.7)',
+      }}>
         {currentIndex + 1} / {videos.length}
       </div>
 
       {/* Scroll container */}
       <div
         ref={scrollRef}
-        className="w-full h-full overflow-y-auto snap-y snap-mandatory"
+        style={{ width: '100%', height: '100%', overflowY: 'auto', scrollSnapType: 'y mandatory' }}
       >
         {videos.map((video, i) => (
           <div
             key={i}
-            className="snap-start w-full h-screen flex items-center justify-center relative"
+            style={{ scrollSnapAlign: 'start', width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
           >
             <video
               ref={(el) => { videoRefs.current[i] = el; }}
@@ -128,7 +156,6 @@ function ReelsViewer({
               className="max-h-full w-auto object-contain"
               style={{ aspectRatio: '9/16', maxWidth: '100%', borderRadius: 0 }}
             />
-            {/* Label above controls */}
             <div className="absolute bottom-16 left-1/2 -translate-x-1/2 pointer-events-none">
               <span className="font-mono text-sm text-white/60 tracking-wide drop-shadow-lg">
                 {video.label}
@@ -139,6 +166,13 @@ function ReelsViewer({
       </div>
     </div>
   );
+}
+
+function ReelsViewer(props: { videos: { label: string; src: string }[]; startIndex: number; onClose: () => void }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+  return createPortal(<ReelsViewerContent {...props} />, document.body);
 }
 
 // ─── Location Data ───────────────────────────────────────────
