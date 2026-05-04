@@ -48,9 +48,17 @@ export default function ProjectPage() {
             if (i !== 0 || hasScrolled) {
               vid.currentTime = 0;
             }
-            vid.play().catch(() => {});
+            // Autoplay unmuted, fall back to muted if browser blocks
+            vid.muted = false;
+            vid.controls = true;
+            setUnmutedIndex(i);
+            vid.play().catch(() => {
+              vid.muted = true;
+              vid.play().catch(() => {});
+            });
           } else {
             vid.pause();
+            vid.muted = true;
           }
         },
         { threshold: 0.6 }
