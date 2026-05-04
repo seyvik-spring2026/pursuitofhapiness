@@ -357,11 +357,11 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div {...fadeUp} className="mb-16">
-            <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-3xl mx-auto">
+            <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
               {THUMBNAIL_VIDEOS.map((video, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden cursor-pointer group"
+                  className="relative overflow-hidden cursor-pointer group h-[60vh]"
                   style={{ aspectRatio: '9/16' }}
                   onClick={() => setReelsStartIndex(i)}
                 >
