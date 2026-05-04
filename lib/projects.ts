@@ -45,12 +45,12 @@ export const PROJECTS: Record<string, ProjectData> = {
     postmark: 'Babson / NYC',
     context:
       'This is a series where I tell the stories of the most ambitious type of person: founders.\n\nI\'m fascinated with who these people are beyond their product. How do you deal with the stressful road you are taking, and what gets you out of bed every morning to do it?\n\nThis is my attempt at getting to the bottom of those questions.',
-    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4',
+    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-desieats.mp4',
     videos: [
-      { label: 'Mateo, Clave', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4' },
-      { label: 'Faizan, Speakeasy', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-faizan-speakeasy.mp4' },
-      { label: 'Krish, DamFellows', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-damfellows.mp4' },
-      { label: 'Krish, DesiEats', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-desieats.mp4' },
+      { label: 'Krish Khemlani, Desi Eats', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-desieats.mp4' },
+      { label: 'Mateo Acosta-Rubio, Clave AI', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-mateo-clave.mp4' },
+      { label: 'Faizan Asif, Speakeasy', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-faizan-speakeasy.mp4' },
+      { label: 'Krish Bhatia, Bobby Browser', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/founders/this-is-krish-damfellows.mp4' },
     ],
   },
   'cash-flows': {
