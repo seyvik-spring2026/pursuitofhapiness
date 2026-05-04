@@ -64,7 +64,7 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
           )}
 
           {/* Dark gradient for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
           {/* Play button on hover */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -76,11 +76,11 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
           </div>
 
           {/* Title and blurb overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-5">
-            <h2 className="text-lg md:text-xl font-bold text-white">
+          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
               {project.title}
             </h2>
-            <p className="text-sm text-white/60 leading-snug mt-1 line-clamp-2">
+            <p className="text-sm text-white/60 leading-snug mt-2 line-clamp-2">
               {project.context.split('\n\n')[0]}...
             </p>
           </div>

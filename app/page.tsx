@@ -53,7 +53,7 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
             />
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
@@ -63,11 +63,11 @@ function ProjectCard({ slug, index }: { slug: string; index: number }) {
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 p-5">
-            <h3 className="text-lg md:text-xl font-bold text-white">
+          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
               {project.title}
             </h3>
-            <p className="text-sm text-white/60 leading-snug mt-1 line-clamp-2">
+            <p className="text-sm text-white/60 leading-snug mt-2 line-clamp-2">
               {project.context.split('\n\n')[0]}...
             </p>
           </div>
