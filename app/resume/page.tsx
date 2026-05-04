@@ -27,7 +27,7 @@ const FINANCE: ResumeEntry[] = [
 ];
 
 const MEDIA: ResumeEntry[] = [
-  { title: 'Founder', org: 'Pursuit of Happiness Productions', date: 'June 2025-Present' },
+  { title: 'Founder', org: 'Poh Media', date: 'June 2025-Present' },
   { title: 'Media Associate', org: 'MGMT Boston', date: 'Feb 2026-Present' },
   { title: 'Content Producer', org: 'Truemed', date: 'Jan-Apr 2026' },
 ];
