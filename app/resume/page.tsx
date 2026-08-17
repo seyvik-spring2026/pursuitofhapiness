@@ -26,6 +26,10 @@ const FINANCE: ResumeEntry[] = [
   { title: 'Commercial Real Estate Analyst', org: 'Lotus Equity Partners', date: 'June-Aug 2023' },
 ];
 
+const STARTUP: ResumeEntry[] = [
+  { title: 'GTM Startup Banking', org: 'Rho', date: 'Present' },
+];
+
 const MEDIA: ResumeEntry[] = [
   { title: 'Founder', org: 'Poh Media', date: 'June 2025-Present' },
   { title: 'Media Associate', org: 'MGMT Boston', date: 'Feb 2026-Present' },
@@ -76,6 +80,11 @@ export default function ResumePage() {
             <motion.div {...fadeUp}>
               <div className="h-px opacity-10 bg-current my-10" />
               <Section title="Finance" entries={FINANCE} />
+            </motion.div>
+
+            <motion.div {...fadeUp}>
+              <div className="h-px opacity-10 bg-current my-10" />
+              <Section title="Startup" entries={STARTUP} />
             </motion.div>
 
             <motion.div {...fadeUp}>
