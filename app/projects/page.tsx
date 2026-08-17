@@ -14,9 +14,9 @@ const fadeUp = {
 };
 
 const PROJECT_ORDER = [
+  'rho-events',
   'truemed',
   'mgmt-boston',
-  'rho-events',
   'founder-storytelling',
   'arcangel',
   'cash-flows',

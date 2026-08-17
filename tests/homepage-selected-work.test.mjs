@@ -20,13 +20,37 @@ test('homepage renders the requested selected-work project order', async () => {
   const projectLinks = [
     '/projects/founder-storytelling',
     '/projects/arcangel',
-    '/projects/truemed',
+    '/projects/rho-events',
     '/projects/cash-flows',
   ];
   const positions = projectLinks.map((href) => html.indexOf(`href="${href}"`));
 
   assert.ok(positions.every((position) => position >= 0), 'all four selected projects render');
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
+  assert.doesNotMatch(html, /href="\/projects\/truemed"/);
+});
+
+test('projects page renders Rho Events first', async () => {
+  const html = await getPageHtml('/projects');
+  const rhoPosition = html.indexOf('href="/projects/rho-events"');
+  const truemedPosition = html.indexOf('href="/projects/truemed"');
+
+  assert.ok(rhoPosition >= 0, 'Rho Events renders');
+  assert.ok(truemedPosition >= 0, 'Truemed renders');
+  assert.ok(rhoPosition < truemedPosition, 'Rho Events renders before Truemed');
+});
+
+test('Rho Events renders the approved copy, four videos, and real poster frames', async () => {
+  const html = await getPageHtml('/projects/rho-events');
+  const videos = html.match(/<video[^>]*>/g) ?? [];
+
+  assert.match(html, /I shoot event storytelling videos across San Francisco, Boston, and New York with Rho/);
+  assert.match(html, /95% of startup events don(?:'|&#x27;|’|&rsquo;)t receive media coverage/);
+  assert.equal(videos.length, 4);
+  for (const video of videos) {
+    assert.match(video, /poster="\/project-posters\/rho-[^"]+\.jpg"/);
+    assert.doesNotMatch(video, /video-placeholder/);
+  }
 });
 
 test('homepage renders a monospaced All Projects pill below selected work', async () => {

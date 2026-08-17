@@ -13,7 +13,7 @@ const fadeUp = {
   transition: { duration: 0.7, ease: 'easeOut' },
 };
 
-const HOME_PROJECTS = ['founder-storytelling', 'arcangel', 'truemed', 'cash-flows'];
+const HOME_PROJECTS = ['founder-storytelling', 'arcangel', 'rho-events', 'cash-flows'];
 
 function ProjectCard({ slug, index }: { slug: string; index: number }) {
   const project = PROJECTS[slug];
