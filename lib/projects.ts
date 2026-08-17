@@ -21,12 +21,13 @@ export const PROJECTS: Record<string, ProjectData> = {
     postmark: 'SF · Boston · NYC',
     context:
       'I shoot event storytelling videos across San Francisco, Boston, and New York with Rho, a business banking platform for startups. 95% of startup events don\'t receive media coverage, and if they do it can\'t capture the energy that was in these rooms. I can.',
-    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/founders-inc-1.mp4',
+    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho/f.inc%20open%20campus.mov',
+    previewPoster: '/project-posters/video-placeholder.svg',
     videos: [
-      { label: 'Founders Inc', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/founders-inc-1.mp4' },
-      { label: 'Z Fellows', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/z-fellows.mp4' },
-      { label: 'Babson Pitch Comp', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/babson-pitch-comp.mp4' },
-      { label: 'Founders Inc', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/founders-inc-2.mp4' },
+      { label: 'Founders Inc — Open Campus', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho/f.inc%20open%20campus.mov', poster: '/project-posters/video-placeholder.svg' },
+      { label: 'Z Fellows', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho/Z-fellows%20Vlog.mov', poster: '/project-posters/video-placeholder.svg' },
+      { label: 'NYC to SF', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho/nyc%20to%20sf.mov', poster: '/project-posters/video-placeholder.svg' },
+      { label: 'Founders Inc — Offseason II Festival', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho/Offseason%20II%20Festival.mov', poster: '/project-posters/video-placeholder.svg' },
     ],
   },
   truemed: {

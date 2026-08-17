@@ -16,6 +16,7 @@ const fadeUp = {
 const PROJECT_ORDER = [
   'truemed',
   'mgmt-boston',
+  'rho-events',
   'founder-storytelling',
   'arcangel',
   'cash-flows',
