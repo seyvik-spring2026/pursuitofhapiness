@@ -9,6 +9,12 @@ async function getHomepageHtml() {
   return response.text();
 }
 
+async function getPageHtml(path) {
+  const response = await fetch(`${baseUrl}${path}`);
+  assert.equal(response.status, 200);
+  return response.text();
+}
+
 test('homepage renders the requested selected-work project order', async () => {
   const html = await getHomepageHtml();
   const projectLinks = [
@@ -63,4 +69,20 @@ test('homepage renders Let’s work together as a matching pill', async () => {
   assert.match(workTogether, /rounded-full/);
   assert.match(workTogether, /bg-black/);
   assert.match(workTogether, /text-white/);
+});
+
+test('project cards render their video stills in color on every listing page', async () => {
+  const [homepage, projectsPage] = await Promise.all([
+    getHomepageHtml(),
+    getPageHtml('/projects'),
+  ]);
+
+  for (const html of [homepage, projectsPage]) {
+    const cardVideos = html.match(/<video[^>]*>/g) ?? [];
+    assert.ok(cardVideos.length > 0, 'project card videos render');
+    for (const video of cardVideos) {
+      assert.doesNotMatch(video, /(?:^|\s)grayscale(?:\s|$)/);
+      assert.doesNotMatch(video, /group-hover:grayscale-0/);
+    }
+  }
 });
