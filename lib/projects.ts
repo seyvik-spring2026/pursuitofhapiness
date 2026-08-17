@@ -13,12 +13,26 @@ export interface ProjectData {
 }
 
 export const PROJECTS: Record<string, ProjectData> = {
+  'rho-events': {
+    title: 'Rho Events',
+    tag: 'Event Storytelling · Rho',
+    postmark: 'SF · Boston · NYC',
+    context:
+      'I shoot event storytelling videos across San Francisco, Boston, and New York with Rho, a business banking platform for startups. 95% of startup events don\'t receive media coverage, and if they do it can\'t capture the energy that was in these rooms. I can.',
+    previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/founders-inc-1.mp4',
+    videos: [
+      { label: 'Founders Inc', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/founders-inc-1.mp4' },
+      { label: 'Z Fellows', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/z-fellows.mp4' },
+      { label: 'Babson Pitch Comp', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/babson-pitch-comp.mp4' },
+      { label: 'Founders Inc', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/rho-events/founders-inc-2.mp4' },
+    ],
+  },
   truemed: {
     title: 'Truemed',
     tag: 'Fintech · Content',
     postmark: 'NYC, NY',
     context:
-      'Truemed is a payments platform that makes it simple for people to use their pre-tax dollars on preventative health products like a Peloton, smart mattresses, red light therapy, even a cold plunge. In December 2025, Truemed closed a $34 million Series A led by a16z after experiencing 3x revenue growth for two consecutive years.\n\nTheir next unlock wasn\'t the product. It was cultural awareness. Recognizing that Truemed\'s happiest customers were an underutilized growth channel, I launched a customer success story campaign to sit down with people like Stephanie who transformed their lives through preventative health and tell those stories cinematically.\n\nI built out a content strategy across three verticals designed to drive trust and awareness in a space most Americans know almost nothing about.\n\nThe result: Truemed\'s highest-engagement Instagram Reel (8.2K views, 252 interactions, 30 saves), and their top-performing TikTok and YouTube Short.',
+      'In less than 30 days I produced Truemed\'s highest-engagement Instagram Reel (14K views, 400 interactions, 42 saves), and their top-performing TikTok and YouTube Short.\n\nTruemed is a health payments platform that recently closed a $34 million Series A led by a16z after experiencing 3x revenue growth for two consecutive years.\n\nTheir next unlock was cultural awareness. Recognizing that Truemed\'s happiest customers were an underutilized growth channel, I launched a customer success story campaign to sit down with people like Stephanie who transformed their lives through preventative health and tell those stories.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/truemed/truemed-customer-story.mp4',
     videos: [
       { label: 'Customer Success Story', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/truemed/truemed-customer-story.mp4' },
@@ -31,7 +45,7 @@ export const PROJECTS: Record<string, ProjectData> = {
     tag: 'Startup Events · Recurring',
     postmark: 'Boston, MA',
     context:
-      'I worked directly with Matt Crane, the founder of MGMT Boston, to support his larger goal: help grow the Boston startup ecosystem.\n\nThis meant going to pitch comps, networking events, founder meetups, and telling these stories. My goal was to capture the energy of these events in a way that makes people wish they were there, and makes the people who were there want to come back.\n\nDuring my time with Matt, MGMT became the connective tissue of the Boston startup ecosystem. The next stop is New York City.',
+      'I worked directly with Matt Crane, the founder of MGMT Boston, to support his larger goal: help grow the Boston startup ecosystem.\n\nThis meant going to pitch comps, networking events, founder meetups, and telling these stories. My goal was to capture the energy of these events in a way that makes people wish they were there, and makes the people who were there want to come back.',
     previewVideo: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-roast-my-stack.mp4',
     videos: [
       { label: 'Roast My Stack', src: 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/Videos/mgmt/mgmt-roast-my-stack.mp4' },
