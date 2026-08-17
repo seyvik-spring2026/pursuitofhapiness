@@ -32,8 +32,8 @@ const STARTUP: ResumeEntry[] = [
 
 const MEDIA: ResumeEntry[] = [
   { title: 'Founder', org: 'Poh Media', date: 'June 2025-Present' },
-  { title: 'Media Associate', org: 'MGMT Boston', date: 'Feb 2026-Present' },
-  { title: 'Content Producer', org: 'Truemed', date: 'Jan-Apr 2026' },
+  { title: 'Media Associate', org: 'MGMT Boston', date: 'Feb-Apr 2026' },
+  { title: 'Content Producer', org: 'Truemed', date: 'Apr-May 2026' },
 ];
 
 const LEADERSHIP: ResumeEntry[] = [
@@ -79,12 +79,12 @@ export default function ResumePage() {
 
             <motion.div {...fadeUp}>
               <div className="h-px opacity-10 bg-current my-10" />
-              <Section title="Finance" entries={FINANCE} />
+              <Section title="Startup" entries={STARTUP} />
             </motion.div>
 
             <motion.div {...fadeUp}>
               <div className="h-px opacity-10 bg-current my-10" />
-              <Section title="Startup" entries={STARTUP} />
+              <Section title="Finance" entries={FINANCE} />
             </motion.div>
 
             <motion.div {...fadeUp}>
