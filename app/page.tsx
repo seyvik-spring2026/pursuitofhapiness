@@ -12,7 +12,7 @@ const fadeUp = {
   transition: { duration: 0.7, ease: 'easeOut' },
 };
 
-const HOME_PROJECTS = ['truemed', 'mgmt-boston', 'founder-storytelling', 'cash-flows'];
+const HOME_PROJECTS = ['founder-storytelling', 'arcangel', 'truemed', 'cash-flows'];
 
 function ProjectCard({ slug, index }: { slug: string; index: number }) {
   const project = PROJECTS[slug];
@@ -161,6 +161,15 @@ export default function Home() {
               <ProjectCard key={slug} slug={slug} index={i} />
             ))}
           </div>
+
+          <motion.div {...fadeUp} className="flex justify-center mt-12 md:mt-16">
+            <Link
+              href="/projects"
+              className="inline-flex items-center rounded-full bg-black px-6 py-3 font-mono text-sm text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/80"
+            >
+              All Projects →
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -168,16 +177,16 @@ export default function Home() {
       <section className="px-6 md:px-12 py-32 md:py-40">
         <motion.div {...fadeUp} className="max-w-2xl mx-auto text-center">
           <p className="text-lg md:text-xl leading-relaxed mb-6 opacity-75">
-            I&apos;m a finance student at Babson College. For the past two
-            summers I&apos;ve interned in finance, most recently as a private
+            I&apos;m a storyteller living in San Francisco. For the past two
+            summers though I worked in finance, most recently as a private
             credit analyst on Wall Street. When I was very young, I used to
             make movies about everything. I&apos;ve started doing it again.
           </p>
           <Link
             href="/about"
-            className="inline-block mt-2 font-mono text-sm opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
+            className="inline-block mt-2 text-sm opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
           >
-            More about me
+            More about me →
           </Link>
         </motion.div>
       </section>
@@ -216,7 +225,7 @@ export default function Home() {
 
           <a
             href="mailto:contact@seyvikmagon.com"
-            className="inline-block mt-12 px-8 py-3 bg-black text-white font-mono text-sm tracking-wide hover:bg-black/80 transition-colors"
+            className="inline-flex items-center mt-12 rounded-full bg-black px-6 py-3 font-mono text-sm text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/80"
           >
             Let&apos;s work together
           </a>
