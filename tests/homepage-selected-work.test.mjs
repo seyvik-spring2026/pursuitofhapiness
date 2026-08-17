@@ -40,6 +40,13 @@ test('projects page renders Rho Events first', async () => {
   assert.ok(rhoPosition < truemedPosition, 'Rho Events renders before Truemed');
 });
 
+test('projects page does not advertise the website source repository', async () => {
+  const html = await getPageHtml('/projects');
+
+  assert.doesNotMatch(html, /View Source on GitHub/);
+  assert.doesNotMatch(html, /github\.com\/seyvik-spring2026\/pursuitofhapiness/);
+});
+
 test('Rho Events renders the approved copy, four videos, and real poster frames', async () => {
   const html = await getPageHtml('/projects/rho-events');
   const videos = html.match(/<video[^>]*>/g) ?? [];
