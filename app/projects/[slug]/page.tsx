@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { PROJECTS } from '@/lib/projects';
+import { playVideoFullscreen } from '@/lib/videoFullscreen.mjs';
 
 // ─── Founder metadata for dynamic descriptions ──────────────
 interface FounderData {
@@ -169,19 +170,14 @@ export default function ProjectPage() {
     (index: number) => {
       const vid = videoRefs.current[index];
       if (!vid) return;
-      if (unmutedIndex === index) {
-        vid.muted = true;
-        vid.controls = false;
-        setUnmutedIndex(null);
-      } else {
-        if (unmutedIndex !== null && videoRefs.current[unmutedIndex]) {
-          videoRefs.current[unmutedIndex]!.muted = true;
-          videoRefs.current[unmutedIndex]!.controls = false;
-        }
-        vid.muted = false;
-        vid.controls = true;
-        setUnmutedIndex(index);
+
+      if (unmutedIndex !== null && unmutedIndex !== index && videoRefs.current[unmutedIndex]) {
+        videoRefs.current[unmutedIndex]!.pause();
+        videoRefs.current[unmutedIndex]!.muted = true;
       }
+
+      setUnmutedIndex(index);
+      void playVideoFullscreen(vid);
     },
     [unmutedIndex]
   );
@@ -229,6 +225,7 @@ export default function ProjectPage() {
                           videoRefs.current[i] = el;
                         }}
                         src={video.src}
+                        poster={video.poster}
                         muted={i !== 0}
                         loop
                         playsInline

@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lightbox from '@/components/Lightbox';
+import { playVideoFullscreen } from '@/lib/videoFullscreen.mjs';
 
 const R2 = 'https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev';
 
@@ -17,12 +18,12 @@ const fadeUp = {
 
 // ─── Personal Videos (full list for the Reels viewer) ────────
 const ALL_PERSONAL_VIDEOS = [
-  { label: 'Day in the Life', src: `${R2}/Videos/personal/day-in-the-life-pivot.mp4` },
-  { label: 'Pursuit of Happiness', src: `${R2}/Videos/personal/pursuit-of-hapiness.mp4` },
-  { label: 'Intramural Soccer', src: `${R2}/Videos/personal/intramural-soccer.mp4` },
-  { label: 'Esto es Miami', src: `${R2}/Videos/personal/esto-es-miami.mp4` },
-  { label: 'Day in the Life OG', src: `${R2}/Videos/personal/day-in-the-life-og.mp4` },
-  { label: 'Chinatown', src: `${R2}/Videos/personal/chinatown.mp4` },
+  { label: 'Day in the Life', src: `${R2}/Videos/personal/day-in-the-life-pivot.mp4`, poster: '/project-posters/personal-day-in-life.jpg' },
+  { label: 'Pursuit of Happiness', src: `${R2}/Videos/personal/pursuit-of-hapiness.mp4`, poster: '/project-posters/personal-pursuit.jpg' },
+  { label: 'Intramural Soccer', src: `${R2}/Videos/personal/intramural-soccer.mp4`, poster: '/project-posters/personal-soccer.jpg' },
+  { label: 'Esto es Miami', src: `${R2}/Videos/personal/esto-es-miami.mp4`, poster: '/project-posters/personal-miami.jpg' },
+  { label: 'Day in the Life OG', src: `${R2}/Videos/personal/day-in-the-life-og.mp4`, poster: '/project-posters/personal-day-in-life-og.jpg' },
+  { label: 'Chinatown', src: `${R2}/Videos/personal/chinatown.mp4`, poster: '/project-posters/personal-chinatown.jpg' },
 ];
 
 // The 3 thumbnails shown on the page
@@ -34,7 +35,7 @@ function ReelsViewerContent({
   startIndex,
   onClose,
 }: {
-  videos: { label: string; src: string }[];
+  videos: { label: string; src: string; poster: string }[];
   startIndex: number;
   onClose: () => void;
 }) {
@@ -148,6 +149,7 @@ function ReelsViewerContent({
             <video
               ref={(el) => { videoRefs.current[i] = el; }}
               src={video.src}
+              poster={video.poster}
               muted
               loop
               playsInline
@@ -168,7 +170,7 @@ function ReelsViewerContent({
   );
 }
 
-function ReelsViewer(props: { videos: { label: string; src: string }[]; startIndex: number; onClose: () => void }) {
+function ReelsViewer(props: { videos: { label: string; src: string; poster: string }[]; startIndex: number; onClose: () => void }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
@@ -180,7 +182,7 @@ interface LocationData {
   name: string;
   illustration: string;
   photos: string[];
-  videos?: string[];
+  videos?: { src: string; poster: string }[];
 }
 
 const LOCATIONS: LocationData[] = [
@@ -249,8 +251,8 @@ const LOCATIONS: LocationData[] = [
     illustration: `${R2}/site-media/Entergalactic/chinatown.jpeg`,
     photos: [],
     videos: [
-      `${R2}/site-media/sf/cali-day1.mp4`,
-      `${R2}/site-media/sf/cali-day2.mp4`,
+      { src: `${R2}/site-media/sf/cali-day1.mp4`, poster: '/project-posters/sf-day-1.jpg' },
+      { src: `${R2}/site-media/sf/cali-day2.mp4`, poster: '/project-posters/sf-day-2.jpg' },
     ],
   },
   {
@@ -343,14 +345,20 @@ function LocationCard({ location }: { location: LocationData }) {
 
                 {location.videos && location.videos.length > 0 && (
                   <div className="grid grid-cols-1 gap-2 mb-3">
-                    {location.videos.map((videoSrc, i) => (
+                    {location.videos.map((video, i) => (
                       <video
                         key={i}
-                        src={videoSrc}
+                        src={video.src}
+                        poster={video.poster}
                         controls
                         playsInline
                         preload="metadata"
                         className="w-full rounded-lg"
+                        onClick={(event) => {
+                          if (window.matchMedia('(max-width: 767px)').matches) {
+                            void playVideoFullscreen(event.currentTarget);
+                          }
+                        }}
                       />
                     ))}
                   </div>
@@ -409,10 +417,18 @@ export default function AboutPage() {
                 <div
                   key={i}
                   className="relative overflow-hidden cursor-pointer group aspect-[9/16]"
-                  onClick={() => setReelsStartIndex(i)}
+                  onClick={(event) => {
+                    const videoElement = event.currentTarget.querySelector('video');
+                    if (window.matchMedia('(max-width: 767px)').matches && videoElement) {
+                      void playVideoFullscreen(videoElement);
+                    } else {
+                      setReelsStartIndex(i);
+                    }
+                  }}
                 >
                   <video
                     src={video.src}
+                    poster={video.poster}
                     muted
                     playsInline
                     preload="metadata"

@@ -86,3 +86,39 @@ test('project cards render their video stills in color on every listing page', a
     }
   }
 });
+
+test('project cards expose poster thumbnails and separate mobile fullscreen controls', async () => {
+  const [homepage, projectsPage] = await Promise.all([
+    getHomepageHtml(),
+    getPageHtml('/projects'),
+  ]);
+
+  for (const html of [homepage, projectsPage]) {
+    const cardVideos = html.match(/<video[^>]*>/g) ?? [];
+    assert.ok(cardVideos.length > 0, 'project card videos render');
+    for (const video of cardVideos) {
+      assert.match(video, /poster="[^"]+"/);
+    }
+
+    assert.match(html, /aria-label="Play [^"]+ fullscreen"/);
+    assert.match(html, /aria-label="View [^"]+ project"/);
+  }
+});
+
+test('project detail videos expose poster thumbnails', async () => {
+  const html = await getPageHtml('/projects/truemed');
+  const videos = html.match(/<video[^>]*>/g) ?? [];
+  assert.ok(videos.length > 0, 'project detail videos render');
+  for (const video of videos) {
+    assert.match(video, /poster="[^"]+"/);
+  }
+});
+
+test('about-page videos expose poster thumbnails', async () => {
+  const html = await getPageHtml('/about');
+  const videos = html.match(/<video[^>]*>/g) ?? [];
+  assert.ok(videos.length > 0, 'about-page videos render');
+  for (const video of videos) {
+    assert.match(video, /poster="[^"]+"/);
+  }
+});
