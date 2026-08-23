@@ -154,7 +154,7 @@ Whether you need an ongoing content partner, a story told right,
 or just want to talk about what you're building: I'd love to hear
 from you.
 ```
-Email: contact@seyvikmagon.com
+Email: seyvikmagon@pohmedia.co
 Instagram: @seyvikmagon
 LinkedIn: /in/seyvikmagon
 TikTok: @seyvikmagon07
@@ -295,7 +295,7 @@ or just want to talk about what you're building: I'd love to hear
 from you.
 ```
 
-Email: contact@seyvikmagon.com
+Email: seyvikmagon@pohmedia.co
 Instagram: @seyvikmagon
 LinkedIn: /in/seyvikmagon
 TikTok: @seyvikmagon07

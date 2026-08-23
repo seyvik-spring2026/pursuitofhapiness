@@ -30,10 +30,10 @@ export default function ContactPage() {
 
           <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.2 }}>
             <a
-              href="mailto:contact@seyvikmagon.com"
+              href="mailto:seyvikmagon@pohmedia.co"
               className="text-xl md:text-2xl opacity-80 hover:opacity-100 hover:underline underline-offset-4 transition-all"
             >
-              contact@seyvikmagon.com
+              seyvikmagon@pohmedia.co
             </a>
           </motion.div>
 
@@ -82,7 +82,7 @@ export default function ContactPage() {
 
           <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.4 }}>
             <a
-              href="mailto:contact@seyvikmagon.com"
+              href="mailto:seyvikmagon@pohmedia.co"
               className="inline-block mt-12 px-8 py-3 bg-black text-white font-mono text-sm tracking-wide hover:bg-black/80 transition-colors"
             >
               Let&apos;s work together

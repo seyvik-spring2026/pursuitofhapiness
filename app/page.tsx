@@ -233,10 +233,10 @@ export default function Home() {
           </p>
 
           <a
-            href="mailto:contact@seyvikmagon.com"
+            href="mailto:seyvikmagon@pohmedia.co"
             className="text-xl md:text-2xl opacity-80 hover:opacity-100 hover:underline underline-offset-4 transition-all"
           >
-            contact@seyvikmagon.com
+            seyvikmagon@pohmedia.co
           </a>
 
           <div className="flex items-center justify-center gap-6 mt-10">
@@ -252,7 +252,7 @@ export default function Home() {
           </div>
 
           <a
-            href="mailto:contact@seyvikmagon.com"
+            href="mailto:seyvikmagon@pohmedia.co"
             className="inline-flex items-center mt-12 rounded-full bg-black px-6 py-3 font-mono text-sm text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/80"
           >
             Let&apos;s work together

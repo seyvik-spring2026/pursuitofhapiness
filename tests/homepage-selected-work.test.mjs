@@ -92,7 +92,7 @@ test('homepage keeps More about me as an understated text link with an arrow', a
 test('homepage renders Let’s work together as a matching pill', async () => {
   const html = await getHomepageHtml();
   const workTogether = html.match(
-    /<a[^>]*href="mailto:contact@seyvikmagon\.com"[^>]*>Let(?:'|&#x27;)s work together<\/a>/,
+    /<a[^>]*href="mailto:seyvikmagon@pohmedia\.co"[^>]*>Let(?:'|&#x27;)s work together<\/a>/,
   )?.[0];
 
   assert.ok(workTogether, 'Let’s work together link renders');
@@ -100,6 +100,18 @@ test('homepage renders Let’s work together as a matching pill', async () => {
   assert.match(workTogether, /rounded-full/);
   assert.match(workTogether, /bg-black/);
   assert.match(workTogether, /text-white/);
+});
+
+test('public contact links use the POH Media email address', async () => {
+  const [homepage, contactPage] = await Promise.all([
+    getHomepageHtml(),
+    getPageHtml('/contact'),
+  ]);
+
+  for (const html of [homepage, contactPage]) {
+    assert.match(html, /mailto:seyvikmagon@pohmedia\.co/);
+    assert.doesNotMatch(html, /contact@seyvikmagon\.com/);
+  }
 });
 
 test('project cards render their video stills in color on every listing page', async () => {
