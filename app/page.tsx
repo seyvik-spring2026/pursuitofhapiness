@@ -1,266 +1,115 @@
-'use client';
-
 import Link from 'next/link';
-import { useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { PROJECTS } from '@/lib/projects';
-import { playVideoFullscreen } from '@/lib/videoFullscreen.mjs';
+import PohFilm from '@/components/PohFilm';
+import styles from './poh-home.module.css';
 
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.7, ease: 'easeOut' },
-};
-
-const HOME_PROJECTS = ['founder-storytelling', 'arcangel', 'rho-events', 'cash-flows'];
-
-function ProjectCard({ slug, index }: { slug: string; index: number }) {
-  const project = PROJECTS[slug];
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const vid = videoRef.current;
-    if (!vid) return;
-    if (hovered) {
-      vid.currentTime = 0;
-      vid.play().catch(() => {});
-    } else {
-      vid.pause();
-    }
-  }, [hovered]);
-
-  if (!project) return null;
-
-  const handleMobilePlay = () => {
-    if (videoRef.current) {
-      void playVideoFullscreen(videoRef.current);
-    }
-  };
-
-  return (
-    <motion.article {...fadeUp} transition={{ ...fadeUp.transition, delay: index * 0.1 }} className="group">
-        <div
-          className="relative overflow-hidden cursor-pointer"
-          style={{ aspectRatio: '4/5' }}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          {project.previewVideo && (
-            <video
-              ref={videoRef}
-              src={project.previewVideo}
-              poster={project.previewPoster}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.02]"
-            />
-          )}
-
-          <button
-            type="button"
-            onClick={handleMobilePlay}
-            aria-label={`Play ${project.title} fullscreen`}
-            className="absolute inset-0 z-10 md:hidden"
-          />
-
-          <Link
-            href={`/projects/${slug}`}
-            aria-label={`View ${project.title} project`}
-            className="absolute inset-0 z-10 hidden md:block"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-          <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100">
-            <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-              <svg className="w-6 h-6 text-black/70 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
-
-          <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 p-5 md:p-6">
-            <Link
-              href={`/projects/${slug}`}
-              aria-label={`View ${project.title} project`}
-              className="pointer-events-auto relative z-30 md:hidden"
-            >
-              <h3 className="text-3xl font-bold text-white leading-tight">
-                {project.title}
-              </h3>
-            </Link>
-            <h3 className="hidden text-4xl font-bold leading-tight text-white md:block lg:text-5xl">
-              {project.title}
-            </h3>
-            <p className="text-sm text-white/60 leading-snug mt-2 line-clamp-2">
-              {project.context.split('\n\n')[0]}...
-            </p>
-          </div>
-        </div>
-    </motion.article>
-  );
-}
-
-function ScrollIndicator() {
-  const [opacity, setOpacity] = useState(1);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollFraction = window.scrollY / (window.innerHeight * 0.1);
-      setOpacity(Math.max(0, 1 - scrollFraction));
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.2, duration: 0.8 }}
-      style={{ opacity }}
-      className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      /* Position at roughly 85vh */
-      /* Using bottom positioning relative to the hero section */
-    >
-      <motion.svg
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        className="w-8 h-8 opacity-60"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-      </motion.svg>
-      <span className="font-mono text-sm opacity-50 lowercase">
-        scroll to watch the sunset
-      </span>
-    </motion.div>
-  );
-}
+const selectedWork = [
+  {
+    slug: 'founder-storytelling',
+    title: 'The person behind the company.',
+    description: 'An original series about founders, the road they’re taking, and what gets them out of bed every morning.',
+    category: '01 / Founder stories',
+  },
+  {
+    slug: 'rho-events',
+    title: 'You had to be there. Almost.',
+    description: 'Event storytelling with Rho. The people, conversations, and energy of startup rooms across San Francisco, Boston, and New York.',
+    category: '02 / Events & community',
+  },
+  {
+    slug: 'cash-flows',
+    title: 'Make the complex click.',
+    description: 'Cash Flows: a series breaking down the financial infrastructure that powers the internet. Big ideas, told in a way that makes sense.',
+    category: '03 / Ideas explained',
+  },
+];
 
 export default function Home() {
+  const hero = PROJECTS['founder-storytelling'];
   return (
-    <main className="min-h-[500vh]">
-      {/* ─── HERO SECTION ─────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 md:px-12 pt-14">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="max-w-3xl mx-auto text-center"
-        >
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-[#1A1A1A] mb-6">
-            Seyvik Magon
-          </h1>
-          <p className="font-serif-italic text-xl md:text-2xl lg:text-3xl text-black/65 leading-relaxed max-w-2xl mx-auto mb-8">
-            I create videos that build trust, make complex things click,
-            and match the ambition of your startup.
-          </p>
-          <p className="font-mono text-sm text-black/45 tracking-wider">
-            New York City. Babson &apos;26. Pursuit of Happiness.
-          </p>
-        </motion.div>
+    <main className={styles.home}>
+      <section className={styles.hero} aria-labelledby="poh-title">
+        <div className={styles.mastheadMeta}>
+          <span>Independent filmmaking & storytelling</span>
+          <span>By Seyvik Magon</span>
+        </div>
+        <h1 id="poh-title" className={styles.wordmark}>POH Media</h1>
+        <div className={styles.heroRule} />
+        <div className={styles.heroGrid}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}><span className={styles.sunDot} /> Pursuit of Happiness</p>
+            <h2>Films for people<br />{' '}building <em>something.</em></h2>
+            <p className={styles.heroDescription}>I tell the stories behind ambitious people and ideas. Films that build trust, make the complex click, and make you feel something.</p>
+            <div className={styles.heroActions}>
+              <a href="#work" className={styles.primaryAction}>Explore the films <span aria-hidden="true">↘</span></a>
+              <a href="mailto:seyvikmagon@pohmedia.co" className={styles.textAction}>Let&apos;s talk <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+          <figure className={styles.heroFilm}>
+            <PohFilm src={hero.previewVideo!} poster={hero.previewPoster!} title={hero.title} projectHref="/projects/founder-storytelling" priority />
+            <figcaption><span>Krish Khemlani / Desi Eats</span><span>Founder Storytelling Series</span></figcaption>
+          </figure>
+          <div className={styles.heroAside} aria-hidden="true">Real people.<br />Real stories.</div>
+        </div>
+        <div className={styles.heroBottom}><span>A feeling. A story. A reason to care.</span><a href="#work">Scroll to watch <span aria-hidden="true">↓</span></a></div>
+      </section>
 
-        {/* Scroll indicator positioned at ~85vh */}
-        <div className="absolute bottom-[15vh] left-0 right-0 flex justify-center">
-          <ScrollIndicator />
+      <section id="work" className={styles.work} aria-labelledby="work-heading">
+        <div className={styles.sectionHeading}>
+          <p className={styles.eyebrow}>A few stories I&apos;ve told</p>
+          <h2 id="work-heading">Selected <em>work.</em></h2>
+          <span className={styles.workYears}>Founder stories / Events / Ideas</span>
+        </div>
+        {selectedWork.map((item, index) => {
+          const project = PROJECTS[item.slug];
+          return (
+            <article key={item.slug} className={`${styles.workRow} ${index % 2 === 1 ? styles.workRowReverse : ''}`}>
+              <div className={styles.workFilm}>
+                <PohFilm src={project.previewVideo!} poster={project.previewPoster!} title={project.title} projectHref={`/projects/${item.slug}`} />
+              </div>
+              <div className={styles.workCopy}>
+                <p className={styles.eyebrow}>{item.category}</p>
+                <h3>{item.title}</h3>
+                <p className={styles.workDescription}>{item.description}</p>
+                <Link href={`/projects/${item.slug}`} className={styles.projectLink} aria-label={`View ${project.title} project`}><span>{project.title}</span><span aria-hidden="true">↗</span></Link>
+                <p className={styles.location}>{project.postmark}</p>
+              </div>
+            </article>
+          );
+        })}
+        <div className={styles.allWork}><span>There&apos;s more where that came from.</span><Link href="/projects" className={styles.textAction}>All projects <span aria-hidden="true">↗</span></Link></div>
+      </section>
+
+      <section id="approach" className={styles.approach} aria-labelledby="approach-heading">
+        <p className={styles.eyebrow}>The approach</p>
+        <h2 id="approach-heading">Your ambition.<br />A story worth <em>feeling.</em></h2>
+        <div className={styles.approachDetails}>
+          <p>The work you&apos;ve put in deserves content that can encapsulate it. I find the human story, capture it, and shape it into a film people want to watch.</p>
+          <div className={styles.offerList}><p><span>01</span> Founder & brand storytelling</p><p><span>02</span> Events & community</p><p><span>03</span> Content that makes ideas click</p></div>
         </div>
       </section>
 
-      {/* ─── WORK PREVIEW SECTION ─────────────────────────────── */}
-      <section className="px-6 md:px-12 py-32 md:py-40">
-        <div className="max-w-5xl mx-auto">
-          <motion.p
-            {...fadeUp}
-            className="font-mono text-xs uppercase tracking-[0.2em] opacity-35 mb-12 md:mb-16"
-          >
-            Selected Work
-          </motion.p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {HOME_PROJECTS.map((slug, i) => (
-              <ProjectCard key={slug} slug={slug} index={i} />
-            ))}
-          </div>
-
-          <motion.div {...fadeUp} className="flex justify-center mt-12 md:mt-16">
-            <Link
-              href="/projects"
-              className="inline-flex items-center rounded-full bg-black px-6 py-3 font-mono text-sm text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/80"
-            >
-              All Projects →
-            </Link>
-          </motion.div>
+      <section className={styles.personal} aria-labelledby="personal-heading">
+        <div className={styles.personalStill}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/project-posters/personal-day-in-life.jpg" alt="Seyvik in a frame from his Day in the Life film" loading="lazy" />
+          <span>Day in the Life / A personal film</span>
+        </div>
+        <div className={styles.personalCopy}>
+          <p className={styles.eyebrow}>The person behind the camera</p>
+          <h2 id="personal-heading">Hi, I&apos;m <em>Seyvik.</em></h2>
+          <p>I&apos;m a storyteller living in San Francisco. For the past two summers though I worked in finance, most recently as a private credit analyst on Wall Street.</p>
+          <p>When I was very young, I used to make movies about everything. I&apos;ve started doing it again.</p>
+          <Link href="/about" className={styles.textAction}>More about me <span aria-hidden="true">↗</span></Link>
         </div>
       </section>
 
-      {/* ─── ABOUT TEASER ─────────────────────────────────────── */}
-      <section className="px-6 md:px-12 py-32 md:py-40">
-        <motion.div {...fadeUp} className="max-w-2xl mx-auto text-center">
-          <p className="text-lg md:text-xl leading-relaxed mb-6 opacity-75">
-            I&apos;m a storyteller living in San Francisco. For the past two
-            summers though I worked in finance, most recently as a private
-            credit analyst on Wall Street. When I was very young, I used to
-            make movies about everything. I&apos;ve started doing it again.
-          </p>
-          <Link
-            href="/about"
-            className="inline-block mt-2 text-sm opacity-60 hover:opacity-90 hover:underline underline-offset-4 transition-all"
-          >
-            More about me →
-          </Link>
-        </motion.div>
+      <section className={styles.contact} aria-labelledby="contact-heading">
+        <p className={styles.eyebrow}><span className={styles.sunDot} /> Start a conversation</p>
+        <h2 id="contact-heading">What are you<br /><em>building?</em></h2>
+        <div className={styles.contactBottom}><p>A founder story. An event. An idea that deserves to be understood.<br />I&apos;d love to hear about it.</p><a href="mailto:seyvikmagon@pohmedia.co" className={styles.contactLink}>Let&apos;s work together <span aria-hidden="true">↗</span></a></div>
+        <a href="mailto:seyvikmagon@pohmedia.co" className={styles.email}>seyvikmagon@pohmedia.co</a>
       </section>
-
-      {/* ─── CONTACT CTA ──────────────────────────────────────── */}
-      <section className="px-6 md:px-12 py-32 md:py-40">
-        <motion.div {...fadeUp} className="max-w-2xl mx-auto text-center">
-          <p className="font-serif-italic text-3xl md:text-4xl lg:text-5xl leading-snug mb-10">
-            The work you&apos;ve put in deserves content that can encapsulate it.
-          </p>
-
-          <p className="opacity-60 leading-relaxed mb-12 text-lg">
-            Whether you need an ongoing content partner, a story told right,
-            or just want to talk about what you&apos;re building. I&apos;d love to hear
-            from you.
-          </p>
-
-          <a
-            href="mailto:seyvikmagon@pohmedia.co"
-            className="text-xl md:text-2xl opacity-80 hover:opacity-100 hover:underline underline-offset-4 transition-all"
-          >
-            seyvikmagon@pohmedia.co
-          </a>
-
-          <div className="flex items-center justify-center gap-6 mt-10">
-            <a href="https://instagram.com/seyvikmagon" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-80 transition-opacity" aria-label="Instagram">
-              <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            </a>
-            <a href="https://linkedin.com/in/seyvikmagon" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-80 transition-opacity" aria-label="LinkedIn">
-              <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            </a>
-            <a href="https://tiktok.com/@seyvikmagon07" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-80 transition-opacity" aria-label="TikTok">
-              <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-            </a>
-          </div>
-
-          <a
-            href="mailto:seyvikmagon@pohmedia.co"
-            className="inline-flex items-center mt-12 rounded-full bg-black px-6 py-3 font-mono text-sm text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/80"
-          >
-            Let&apos;s work together
-          </a>
-        </motion.div>
-      </section>
-
-      <div className="h-[30vh]" />
     </main>
   );
 }

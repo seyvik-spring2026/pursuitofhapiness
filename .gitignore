@@ -1,5 +1,7 @@
 public/site-media/
-node_modules/
+node_modules
 .next/
 .DS_Store
 .worktrees/
+.vercel/
+tsconfig.tsbuildinfo
