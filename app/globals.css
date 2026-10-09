@@ -1,9 +1,9 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@1&family=JetBrains+Mono:wght@400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* ─── Google Fonts ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@1&family=JetBrains+Mono:wght@400&display=swap');
 
 /* ─── Sunset CSS Variables ─────────────────────────────────────────── */
 :root {
@@ -24,6 +24,17 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+:focus-visible {
+  outline: 3px solid #ffb675;
+  outline-offset: 6px;
+}
+
+::selection {
+  color: #151d2b;
+  background: #ffc89b;
 }
 
 /* Body must be transparent so .sky-fixed shows through */
@@ -207,4 +218,14 @@ main {
 .font-serif-italic {
   font-family: "Crimson Text", Georgia, serif;
   font-style: italic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .star { animation: none; }
 }

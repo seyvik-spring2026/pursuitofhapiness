@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 // Keyframes extracted from /public/site-media/sunset stages/
 // Each keyframe: [scrollPosition, topColor, upperMidColor, lowerMidColor, horizonColor, glowColor, glowIntensity]
@@ -92,18 +93,20 @@ function generateStars(count: number) {
 const STARS = generateStars(80);
 
 export default function SunsetSky() {
+  const pathname = usePathname();
   const skyRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
   const [starOpacity, setStarOpacity] = useState(0);
 
   useEffect(() => {
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
     function updateSky() {
       const el = skyRef.current;
       if (!el) return;
 
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+      const scrollProgress = !motionPreference.matches && docHeight > 0 ? scrollTop / docHeight : 0;
 
       const kf = getInterpolatedKeyframe(scrollProgress);
 
@@ -132,13 +135,15 @@ export default function SunsetSky() {
     }
 
     updateSky();
+    motionPreference.addEventListener('change', updateSky);
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', onScroll);
+      motionPreference.removeEventListener('change', updateSky);
       cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <>

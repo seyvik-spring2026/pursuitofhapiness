@@ -15,17 +15,33 @@ async function getPageHtml(path) {
   return response.text();
 }
 
+test('launch homepage identifies POH Media and offers a direct contact action', async () => {
+  const html = await getHomepageHtml();
+  assert.match(html, /<h1[^>]*>POH Media<\/h1>/);
+  assert.match(html, /Films for people/);
+  assert.match(html, /mailto:seyvikmagon@pohmedia\.co/);
+  assert.match(html, /id="work"/);
+  assert.match(html, /id="approach"/);
+});
+
+test('hero headline keeps readable word boundaries independent of its layout', async () => {
+  const html = await getHomepageHtml();
+  const heading = html.match(/<h2[^>]*>(Films for people[\s\S]*?)<\/h2>/)?.[1];
+  assert.ok(heading, 'storytelling headline renders');
+  const text = heading.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  assert.equal(text, 'Films for people building something.');
+});
+
 test('homepage renders the requested selected-work project order', async () => {
   const html = await getHomepageHtml();
   const projectLinks = [
     '/projects/founder-storytelling',
-    '/projects/arcangel',
     '/projects/rho-events',
     '/projects/cash-flows',
   ];
   const positions = projectLinks.map((href) => html.indexOf(`href="${href}"`));
 
-  assert.ok(positions.every((position) => position >= 0), 'all four selected projects render');
+  assert.ok(positions.every((position) => position >= 0), 'all three selected projects render');
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
   assert.doesNotMatch(html, /href="\/projects\/truemed"/);
 });
@@ -60,14 +76,9 @@ test('Rho Events renders the approved copy, four videos, and real poster frames'
   }
 });
 
-test('homepage renders a monospaced All Projects pill below selected work', async () => {
+test('homepage offers access to the complete project catalogue', async () => {
   const html = await getHomepageHtml();
-  const anchor = html.match(/<a[^>]*href="\/projects"[^>]*>All Projects →<\/a>/)?.[0];
-
-  assert.ok(anchor, 'All Projects link renders');
-  assert.match(anchor, /font-mono/);
-  assert.match(anchor, /rounded-full/);
-  assert.match(anchor, /bg-black/);
+  assert.match(html, /<a[^>]*href="\/projects"[^>]*>All projects /);
 });
 
 test('homepage introduces Seyvik as a San Francisco storyteller', async () => {
@@ -80,26 +91,10 @@ test('homepage introduces Seyvik as a San Francisco storyteller', async () => {
   assert.match(html, /I(?:'|&#x27;)ve started doing it again\./);
 });
 
-test('homepage keeps More about me as an understated text link with an arrow', async () => {
+test('homepage links the human story and collaboration invitation', async () => {
   const html = await getHomepageHtml();
-  const moreAbout = html.match(/<a[^>]*href="\/about"[^>]*>More about me →<\/a>/)?.[0];
-
-  assert.ok(moreAbout, 'More about me link renders');
-  assert.match(moreAbout, /opacity-60/);
-  assert.doesNotMatch(moreAbout, /font-mono|rounded-full|bg-black|text-white/);
-});
-
-test('homepage renders Let’s work together as a matching pill', async () => {
-  const html = await getHomepageHtml();
-  const workTogether = html.match(
-    /<a[^>]*href="mailto:seyvikmagon@pohmedia\.co"[^>]*>Let(?:'|&#x27;)s work together<\/a>/,
-  )?.[0];
-
-  assert.ok(workTogether, 'Let’s work together link renders');
-  assert.match(workTogether, /font-mono/);
-  assert.match(workTogether, /rounded-full/);
-  assert.match(workTogether, /bg-black/);
-  assert.match(workTogether, /text-white/);
+  assert.match(html, /<a[^>]*href="\/about"[^>]*>More about me /);
+  assert.match(html, /<a[^>]*href="mailto:seyvikmagon@pohmedia\.co"[^>]*>Let(?:'|&#x27;)s work together /);
 });
 
 test('public contact links use the POH Media email address', async () => {
@@ -130,22 +125,30 @@ test('project cards render their video stills in color on every listing page', a
   }
 });
 
-test('project cards expose poster thumbnails and separate mobile fullscreen controls', async () => {
-  const [homepage, projectsPage] = await Promise.all([
-    getHomepageHtml(),
-    getPageHtml('/projects'),
-  ]);
-
-  for (const html of [homepage, projectsPage]) {
-    const cardVideos = html.match(/<video[^>]*>/g) ?? [];
-    assert.ok(cardVideos.length > 0, 'project card videos render');
-    for (const video of cardVideos) {
-      assert.match(video, /poster="[^"]+"/);
-    }
-
-    assert.match(html, /aria-label="Play [^"]+ fullscreen"/);
-    assert.match(html, /aria-label="View [^"]+ project"/);
+test('homepage films show real stills and accessible play controls on the first render', async () => {
+  const html = await getHomepageHtml();
+  const previewVideos = (html.match(/<video[^>]*>/g) ?? []).filter(video => video.includes('muted preview'));
+  assert.equal(previewVideos.length, 4, 'hero plus three selected-work previews render');
+  for (const video of previewVideos) {
+    assert.match(video, /poster="\/project-posters\/[^"]+\.jpg"/);
+    assert.match(video, /muted=""/);
+    assert.match(video, /playsInline=""/);
+    assert.doesNotMatch(video, /autoPlay/);
   }
+  assert.match(html, /<img[^>]*src="\/project-posters\/founder-krish-desieats\.jpg"[^>]*loading="eager"/);
+  assert.equal((html.match(/aria-label="Watch [^"]+ film with sound"/g) ?? []).length, 4);
+  assert.equal((html.match(/<dialog[^>]*aria-label="[^"]+ film player"/g) ?? []).length, 4);
+  assert.match(html, /<video[^>]*controls=""/);
+  assert.match(html, /aria-label="View Founder Storytelling Series project"/);
+});
+
+test('projects listing preserves its poster thumbnails and mobile fullscreen controls', async () => {
+  const html = await getPageHtml('/projects');
+  const cardVideos = html.match(/<video[^>]*>/g) ?? [];
+  assert.ok(cardVideos.length > 0);
+  for (const video of cardVideos) assert.match(video, /poster="[^"]+"/);
+  assert.match(html, /aria-label="Play [^"]+ fullscreen"/);
+  assert.match(html, /aria-label="View [^"]+ project"/);
 });
 
 test('project detail videos expose poster thumbnails', async () => {

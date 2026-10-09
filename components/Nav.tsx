@@ -1,139 +1,79 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
+  { href: '/#work', label: 'Work' },
+  { href: '/#approach', label: 'Approach' },
   { href: '/about', label: 'About' },
-  { href: '/resume', label: 'Resume' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
+
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
-    function onScroll() {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-
-      setScrolled(scrollTop > 40);
-      setDarkMode(progress > 0.35);
+    if (!menuOpen) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
     }
-
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    const desktop = window.matchMedia('(min-width: 768px)');
+    function onResize() { if (desktop.matches) setMenuOpen(false); }
+    window.addEventListener('keydown', onKeyDown);
+    desktop.addEventListener('change', onResize);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      desktop.removeEventListener('change', onResize);
+    };
+  }, [menuOpen]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? darkMode
-            ? 'bg-black/30 backdrop-blur-md border-b border-white/5'
-            : 'bg-white/20 backdrop-blur-md border-b border-black/5'
-          : ''
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
-        {/* Logo */}
-        <Link href="/" className="transition-opacity hover:opacity-80">
+    <nav className="poh-nav" aria-label="Main navigation">
+      <div className="poh-nav-inner">
+        <Link href="/" className="poh-wordmark" aria-label="POH Media home" onClick={() => setMenuOpen(false)}>
           <Image
             src="https://pub-8bc2042bd6374fa0bb22837d7930ad11.r2.dev/site-media/Entergalactic/pigeon-widget.png"
-            alt="Home"
+            alt=""
             width={42}
             height={28}
-            className="object-contain"
+            className="poh-pigeon"
           />
+          <span>POH <span className="poh-wordmark-light">Media</span></span>
         </Link>
-
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-10">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-[15px] tracking-wide transition-colors ${
-                darkMode
-                  ? 'text-white/60 hover:text-white'
-                  : 'text-black/50 hover:text-black'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="poh-desktop-links">
+          {NAV_LINKS.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
         </div>
-
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className={`md:hidden flex flex-col gap-[5px] p-2 transition-colors ${
-            darkMode ? 'text-white/70' : 'text-black/60'
-          }`}
-          aria-label="Toggle menu"
-        >
-          <motion.span
-            animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-            className={`block w-5 h-[1.5px] origin-center ${
-              darkMode ? 'bg-white/70' : 'bg-black/60'
-            }`}
-          />
-          <motion.span
-            animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-            className={`block w-5 h-[1.5px] ${
-              darkMode ? 'bg-white/70' : 'bg-black/60'
-            }`}
-          />
-          <motion.span
-            animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-            className={`block w-5 h-[1.5px] origin-center ${
-              darkMode ? 'bg-white/70' : 'bg-black/60'
-            }`}
-          />
-        </button>
-      </div>
-
-      {/* Mobile menu panel */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className={`md:hidden px-6 pb-6 pt-2 ${
-              darkMode
-                ? 'bg-black/40 backdrop-blur-lg'
-                : 'bg-white/30 backdrop-blur-lg'
-            }`}
+        <div className="poh-nav-actions">
+          <a className="poh-talk-link" href="mailto:seyvikmagon@pohmedia.co">Let&apos;s talk <span aria-hidden="true">↗</span></a>
+          <button
+            ref={menuButton}
+            type="button"
+            className="poh-menu-toggle"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="poh-mobile-menu"
+            onClick={() => setMenuOpen((open) => !open)}
           >
-            <div className="flex flex-col gap-4">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`text-lg transition-colors ${
-                    darkMode
-                      ? 'text-white/70 hover:text-white'
-                      : 'text-black/60 hover:text-black'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <span>{menuOpen ? 'Close' : 'Menu'}</span>
+            <span aria-hidden="true">{menuOpen ? '−' : '+'}</span>
+          </button>
+        </div>
+      </div>
+      <div id="poh-mobile-menu" className="poh-mobile-menu" hidden={!menuOpen}>
+        {NAV_LINKS.map((link) => (
+          <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}<span aria-hidden="true">↗</span></Link>
+        ))}
+        <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact<span aria-hidden="true">↗</span></Link>
+      </div>
     </nav>
   );
 }
